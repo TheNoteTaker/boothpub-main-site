@@ -1,0 +1,74 @@
+---
+import pkg from 'lucide-react';
+const { Camera, Cocktail, Timer, Sparkles } = pkg;
+
+const benefits = [
+  {
+    name: 'Professional Photos & Fun Props',
+    description:
+      "High-quality DSLR cameras and professional lighting ensure perfect shots every time. Plus, a curated collection of props to spark creativity.",
+    Icon: Camera,
+  },
+  {
+    name: 'Optional Bartending or Soda Bar',
+    description:
+      "Choose between professional bartending service with signature cocktails or a fun, non-alcoholic soda bar experience.",
+    Icon: Cocktail,
+  },
+  {
+    name: 'Effortless Setup',
+    description:
+      "We handle everything from setup to teardown. Just point us to the spot, and we will create the perfect photo station.",
+    Icon: Timer,
+  },
+  {
+    name: 'Instant Sharing',
+    description:
+      "Digital delivery of all photos within 24 hours, plus instant printing on-site for immediate memories.",
+    Icon: Sparkles,
+  },
+];
+---
+
+<section
+  id="benefits"
+  aria-label="Features for running your books"
+  class="relative overflow-hidden bg-background py-20 sm:py-32"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl lg:mx-0">
+      <h2 class="text-3xl font-bold tracking-tight text-[#2F505F] sm:text-4xl">
+        Everything you need for an amazing event
+      </h2>
+      <p class="mt-6 text-lg leading-8 text-muted-foreground">
+        We combine the best of photography and hospitality to create unforgettable moments at your event.
+      </p>
+    </div>
+    <div
+      class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none"
+    >
+      <dl
+        class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-4"
+      >
+        {
+          benefits.map((benefit) => (
+            <div class="flex flex-col">
+              <dt class="text-base font-semibold leading-7 text-[#2F505F]">
+                <div class="mb-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#F9CC9A]">
+                  <benefit.Icon
+                    className="h-6 w-6 text-[#D75E1F]"
+                    aria-hidden="true"
+                  />
+                </div>
+                {benefit.name}
+              </dt>
+              <dd class="mt-1 flex flex-auto flex-col text-base leading-7 text-muted-foreground">
+                <p class="flex-auto">{benefit.description}</p>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>

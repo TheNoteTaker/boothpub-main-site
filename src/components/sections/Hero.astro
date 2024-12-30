@@ -1,0 +1,54 @@
+---
+import { ButtonLink } from "@/components/ui/button-link";
+import pkg from 'lucide-react';
+const { Camera, Sparkles } = pkg;
+---
+
+<section class="relative overflow-hidden bg-background py-20 sm:py-32">
+  <div class="absolute inset-x-0 -top-48 -bottom-14 overflow-hidden bg-indigo-50">
+    <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-white"></div>
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white"></div>
+  </div>
+  
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
+      <div class="flex justify-center mb-8">
+        <div class="relative">
+          <Camera className="w-12 h-12 text-[#D75E1F]" />
+          <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-[#F9CC9A]" />
+        </div>
+      </div>
+      <h1 class="font-display text-4xl font-medium tracking-tight text-[#2F505F] sm:text-5xl md:text-6xl">
+        Make Your Event Unforgettable with Booth Pub
+      </h1>
+      <p class="mt-6 text-lg tracking-tight text-muted-foreground">
+        Photobooth + optional bartending to elevate any party.
+      </p>
+      <div class="mt-10 flex justify-center gap-x-6">
+        <ButtonLink
+          href="#quote"
+          variant="default"
+          size="lg"
+          className="bg-[#D75E1F] hover:bg-[#c24f15]"
+        >
+          Get a Free Quote
+        </ButtonLink>
+        <ButtonLink
+          href="#packages"
+          variant="outline"
+          size="lg"
+          className="border-[#2F505F] text-[#2F505F]"
+        >
+          View Packages
+        </ButtonLink>
+      </div>
+    </div>
+    <div class="mt-16 sm:mt-20">
+      <img
+        class="rounded-xl shadow-xl ring-1 ring-gray-400/10"
+        src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80"
+        alt="Friends having fun in a photobooth"
+      />
+    </div>
+  </div>
+</section>
