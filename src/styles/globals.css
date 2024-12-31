@@ -100,3 +100,4 @@
 
 .hover\:animate-bounce:hover {
   animation: hover-bounce 1s ease-in-out infinite;
+}

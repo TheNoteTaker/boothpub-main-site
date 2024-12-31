@@ -1,89 +1,121 @@
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { motion, useAnimation, useSpring, type AnimationControls } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
+
+const MOUSE_INFLUENCE_RADIUS = 250;
+const PUSH_STRENGTH = 30;
+const SPRING_CONFIG = { stiffness: 40, damping: 15 };
 
 interface PhotoStripProps {
   index: number;
 }
 
 export function PhotoStrip({ index }: PhotoStripProps) {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [constraints, setConstraints] = useState({ right: 0, bottom: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimation();
+  const mouseXSpring = useSpring(0, SPRING_CONFIG);
+  const mouseYSpring = useSpring(0, SPRING_CONFIG);
+  const baseX = useRef(0);
+  const baseY = useRef(0);
   
-  // Generate random initial position
   useEffect(() => {
     const updateDimensions = () => {
-      const width = typeof window !== 'undefined' ? window.innerWidth : 1000;
-      const height = typeof window !== 'undefined' ? window.innerHeight : 800;
+      const container = containerRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
       
-      setConstraints({
-        right: width * 0.8,
-        bottom: height * 0.6
-      });
+      // Keep strips within container bounds
+      const margin = 100; // Prevent strips from touching edges
+      const maxX = width - margin;
+      const maxY = height - margin;
       
-      setPosition({
-        x: Math.random() * width * 0.8,
-        y: Math.random() * height * 0.6
-      });
+      baseX.current = margin + (Math.random() * (maxX - margin * 2));
+      baseY.current = margin + (Math.random() * (maxY - margin * 2));
     };
 
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
+
+    controls.start({
+      x: [baseX.current, baseX.current + Math.random() * 40 - 20],
+      y: [baseY.current, baseY.current + Math.random() * 40 - 20],
+      rotate: [0, Math.random() * 30 - 15],
+      transition: {
+        duration: 3 + Math.random() * 2,
+        repeat: Infinity,
+        repeatType: "reverse" as const,
+        ease: "easeInOut"
+      }
+    });
     
     return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
+  }, [controls]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      const container = containerRef.current;
+      const rect = container?.getBoundingClientRect();
+      
+      if (!rect) return;
+
+      // Convert mouse position to container coordinates
+      const relativeX = mouseX - rect.left;
+      const relativeY = mouseY - rect.top;
+      
+      // Calculate distance from mouse to strip
+      const dx = relativeX - baseX.current;
+      const dy = relativeY - baseY.current;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < MOUSE_INFLUENCE_RADIUS) {
+        const influence = Math.pow(1 - (distance / MOUSE_INFLUENCE_RADIUS), 2);
+        
+        // Push away from mouse with smooth falloff
+        mouseXSpring.set(-dx * influence * PUSH_STRENGTH);
+        mouseYSpring.set(-dy * influence * PUSH_STRENGTH);
+      } else {
+        // Gradually return to base position
+        mouseXSpring.set(0);
+        mouseYSpring.set(0);
+      }
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('mousemove', handleMouseMove);
+      return () => container.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, [mouseXSpring, mouseYSpring]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, rotate: Math.random() * 30 - 15 }}
-      animate={[
-        {
-          opacity: 0.8,
-          x: [position.x - 5, position.x + 5],
-          y: [position.y - 5, position.y + 5],
-          rotate: Math.random() * 30 - 15
-        },
-        {
-          transition: {
-            x: {
-              duration: 6,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            },
-            y: {
-              duration: 4,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }
-          }
-        }
-      ]}
-      whileHover={{
-        scale: 1.1,
-        opacity: 1,
-        rotate: [0, -5, 5, 0],
-        transition: { duration: 0.4, ease: "easeOut" }
-      }}
-      whileDrag={{
-        scale: 1.2,
-        opacity: 1,
-        transition: { duration: 0.2 }
-      }}
-      drag
-      dragConstraints={{
-        top: 0,
-        left: 0,
-        right: constraints.right,
-        bottom: constraints.bottom
-      }}
-      className="absolute cursor-pointer"
-    >
-      <div className="w-16 h-48 bg-white rounded-md shadow-lg overflow-hidden border-4 border-white">
-        <div className="h-1/3 bg-[#F9CC9A] mb-1"></div>
-        <div className="h-1/3 bg-[#D75E1F] mb-1"></div>
-        <div className="h-1/3 bg-[#2F505F]"></div>
-      </div>
-    </motion.div>
+    <div ref={containerRef} className="absolute inset-0">
+      <motion.div
+        animate={controls}
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ 
+          opacity: [0, 0.8],
+          scale: [0.8, 1],
+          transition: { duration: 0.8, ease: "easeOut" }
+        }}
+        style={{
+          x: mouseXSpring,
+          y: mouseYSpring,
+          position: 'absolute',
+          left: baseX.current,
+          top: baseY.current
+        }}
+        className="cursor-pointer z-10 touch-none select-none"
+      >
+        <div className="w-16 h-48 bg-white rounded-md shadow-lg overflow-hidden border-4 border-white transform-gpu hover:shadow-xl transition-all duration-300">
+          <div className="h-1/3 bg-[#F9CC9A] mb-1"></div>
+          <div className="h-1/3 bg-[#D75E1F] mb-1"></div>
+          <div className="h-1/3 bg-[#2F505F]"></div>
+        </div>
+      </motion.div>
+    </div>
   );
 }
