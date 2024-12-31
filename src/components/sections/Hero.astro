@@ -1,17 +1,19 @@
 ---
 import { ButtonLink } from "@/components/ui/button-link";
 import { Icon } from '@/components/ui/Icon';
+import { Image } from 'astro:assets';
 import { PhotoStrip } from '../PhotoStrip';
 ---
 
-<section class="relative overflow-hidden min-h-screen flex items-center justify-center py-12 sm:py-20">
-  <div class="absolute inset-0 -z-10">
-    <img
-      src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80"
+<section class="relative overflow-hidden min-h-[90vh] flex items-center justify-center py-16 sm:py-24">
+  <div class="absolute inset-0 -z-10 bg-gradient-to-br from-white via-white/95 to-white/90">
+    <Image
+      src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80"
       alt="Background"
-      class="object-cover w-full h-full opacity-10 scale-105"
+      width={1920}
+      height={1080}
+      class="object-cover w-full h-full opacity-[0.12] scale-105"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-white via-white/90 to-white"></div>
   </div>
   
   <div class="absolute inset-0">
@@ -25,16 +27,16 @@ import { PhotoStrip } from '../PhotoStrip';
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pointer-events-none">
     <div class="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
       <div class="flex justify-center mb-6 sm:mb-8">
-        <div class="relative animate-float pointer-events-auto">
+        <div class="relative animate-float pointer-events-auto group">
           <Icon name="Camera" className="w-10 h-10 sm:w-12 sm:h-12 text-[#D75E1F]" client:load />
-          <Icon name="Sparkles" className="absolute -top-2 -right-2 w-5 h-5 sm:w-6 sm:h-6 text-[#F9CC9A] animate-pulse" client:load />
+          <Icon name="Sparkles" className="absolute -top-2 -right-2 w-5 h-5 sm:w-6 sm:h-6 text-[#F9CC9A] animate-pulse group-hover:scale-125 transition-transform" client:load />
         </div>
       </div>
-      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-[#2F505F] animate-slide-up">
+      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#2F505F] animate-slide-up">
         Make Your Event Unforgettable with Booth Pub
       </h1>
-      <p class="mt-4 sm:mt-6 text-base sm:text-lg tracking-tight text-muted-foreground animate-fade-in">
-        Photobooth + optional bartending to elevate any party.
+      <p class="mt-6 sm:mt-8 text-lg sm:text-xl tracking-tight text-muted-foreground animate-fade-in max-w-2xl mx-auto">
+        Create lasting memories with our premium photo booth experience, complete with optional bartending services.
       </p>
       <div class="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center gap-4 sm:gap-x-6">
         <ButtonLink
@@ -55,19 +57,13 @@ import { PhotoStrip } from '../PhotoStrip';
         </ButtonLink>
       </div>
     </div>
-    <div class="mt-8 sm:mt-16 pointer-events-auto">
-      <img
-        class="rounded-xl shadow-xl ring-1 ring-gray-400/10 w-full transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"
-        src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80"
+    <div class="mt-12 sm:mt-20 pointer-events-auto relative z-10">
+      <Image
+        class="rounded-xl shadow-xl ring-1 ring-gray-400/10 w-full transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl relative z-10"
+        src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80"
         alt="Friends having fun in a photobooth"
+        width={1200}
+        height={675}
       />
     </div>
   </div>
-</section>
-
-<style>
-  .hero-container {
-    position: relative;
-    overflow: hidden;
-  }
-</style>
