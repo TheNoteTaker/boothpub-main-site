@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
-    "@astrojs/react": "^3.6.2",
+    "@astrojs/react": "^3.0.9",
     "@astrojs/tailwind": "^5.1.1",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -44,7 +44,8 @@
     "@radix-ui/react-tooltip": "^1.1.2",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
-    "astro": "^4.15.9",
+    "astro": "^4.0.9",
+    "framer-motion": "^11.0.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
