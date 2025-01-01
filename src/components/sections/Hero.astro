@@ -2,32 +2,30 @@
 import { ButtonLink } from "@/components/ui/button-link";
 import { Icon } from '@/components/ui/Icon';
 import { Image } from 'astro:assets';
-import { PhotoStrip } from '../PhotoStrip';
 import { PhotoStripCarousel } from '../PhotoStripCarousel';
+import { PhotoStripContainer } from '../PhotoStripContainer';
 ---
 
-<section class="relative overflow-hidden min-h-screen flex items-center justify-center">
+<section class="relative overflow-hidden h-[100vh] flex items-center justify-center">
   <!-- Background image layer -->
   <div class="absolute inset-0 -z-10">
     <Image
-      src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80"
-      alt="Background Pattern"
+      src="https://images.unsplash.com/photo-1532635241-17e820acc59f?auto=format&fit=crop&q=80"
+      alt="Photo Booth Event Background"
       width={1920}
       height={1080}
-      class="object-cover w-full h-full opacity-[0.15]"
+      class="object-cover w-full h-full opacity-30"
       loading="eager"
       fetchpriority="high"
       decoding="sync"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-white via-white/95 to-white/90"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/80"></div>
   </div>
   
   <!-- Floating photo strips layer -->
   <div class="absolute inset-0 -z-5">
     <div class="hero-container relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <PhotoStrip client:idle index={i} />
-      ))}
+      <PhotoStripContainer client:load />
     </div>
   </div>
 
@@ -40,13 +38,13 @@ import { PhotoStripCarousel } from '../PhotoStripCarousel';
           <Icon name="Sparkles" className="absolute -top-2 -right-2 w-5 h-5 sm:w-6 sm:h-6 text-[#F9CC9A] animate-pulse group-hover:scale-125 transition-transform" client:load />
         </div>
       </div>
-      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#2F505F] animate-slide-up">
+      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white animate-slide-up">
         Make Your Event Unforgettable with Booth Pub
       </h1>
-      <p class="mt-6 sm:mt-8 text-lg sm:text-xl tracking-tight text-muted-foreground animate-fade-in">
+      <p class="mt-6 sm:mt-8 text-lg sm:text-xl tracking-tight text-gray-200 animate-fade-in">
         Create lasting memories with our premium photo booth experience, complete with optional bartending services.
       </p>
-      <div class="mt-10 sm:mt-12 flex flex-col sm:flex-row justify-center gap-4 sm:gap-x-6">
+      <div class="mt-10 sm:mt-12 flex flex-col sm:flex-row justify-center gap-4 sm:gap-x-6 mb-[20vh]">
         <ButtonLink
           href="#quote"
           variant="default"
@@ -59,7 +57,7 @@ import { PhotoStripCarousel } from '../PhotoStripCarousel';
           href="#packages"
           variant="outline"
           size="lg"
-          className="border-[#2F505F] text-[#2F505F] w-full sm:w-auto transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-[#2F505F] hover:text-white pointer-events-auto"
+          className="border-white/20 bg-white/5 text-white w-full sm:w-auto transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-white/10 hover:border-white hover:text-white pointer-events-auto"
         >
           View Packages
         </ButtonLink>
@@ -68,7 +66,7 @@ import { PhotoStripCarousel } from '../PhotoStripCarousel';
   </div>
   
   <!-- Bottom carousel layer -->
-  <div class="absolute bottom-0 left-0 right-0 z-20">
+  <div class="absolute bottom-0 left-0 right-0 z-20 h-[15vh] min-h-[120px] max-h-[180px]">
     <PhotoStripCarousel client:load />
   </div>
 </section>
@@ -77,5 +75,14 @@ import { PhotoStripCarousel } from '../PhotoStripCarousel';
   .hero-container {
     position: relative;
     overflow: hidden;
+  }
+
+  @keyframes flash {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  .animate-flash {
+    animation: flash 0.3s ease-out forwards;
   }
 </style>
