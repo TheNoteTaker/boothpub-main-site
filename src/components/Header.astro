@@ -1,0 +1,163 @@
+---
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <a href="/" class="text-white font-bold text-2xl hover:text-white/80 transition-all duration-300 ease-out">
+          Booth Pub
+        </a>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex space-x-8">
+        <a 
+          href="#demo" 
+          class="text-gray-300 hover:text-white relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-white after:transition-all after:duration-300 transition-all duration-300"
+        >
+          Demo
+        </a>
+        <a 
+          href="#features" 
+          class="text-gray-300 hover:text-white relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-white after:transition-all after:duration-300 transition-all duration-300"
+        >
+          Features
+        </a>
+        <a 
+          href="#gallery" 
+          class="text-gray-300 hover:text-white relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-white after:transition-all after:duration-300 transition-all duration-300"
+        >
+          Gallery
+        </a>
+        <a 
+          href="#contact" 
+          class="text-gray-300 hover:text-white relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-white after:transition-all after:duration-300 transition-all duration-300"
+        >
+          Contact
+        </a>
+      </nav>
+
+      <!-- CTA Button -->
+      <div class="hidden md:block">
+        <a
+          href="#book"
+          class="inline-flex items-center px-6 py-2.5 border border-white/20 text-sm font-medium rounded-lg text-white bg-white/10 hover:bg-white hover:text-black transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-lg"
+        >
+          Book Now
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button
+          type="button"
+          class="text-gray-300 hover:text-white transition-colors duration-300"
+          aria-label="Open menu"
+          id="menuButton"
+        >
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu (hidden by default) -->
+  <div class="hidden md:hidden transition-all duration-300 ease-in-out" id="mobileMenu">
+    <div class="px-2 pt-2 pb-3 space-y-1 bg-black/60 backdrop-blur-lg">
+      <a
+        href="#demo"
+        class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+      >
+        Demo
+      </a>
+      <a
+        href="#features"
+        class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+      >
+        Features
+      </a>
+      <a
+        href="#gallery"
+        class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+      >
+        Gallery
+      </a>
+      <a
+        href="#contact"
+        class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+      >
+        Contact
+      </a>
+      <a
+        href="#book"
+        class="block px-3 py-2 text-white bg-white/10 hover:bg-white hover:text-black rounded-lg transition-all duration-300 transform hover:translate-x-1"
+      >
+        Book Now
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menuButton = document.getElementById('menuButton');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  if (menuButton && mobileMenu) {
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      // Add slide animation
+      if (!mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('animate-slideDown');
+      } else {
+        mobileMenu.classList.remove('animate-slideDown');
+      }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (event) => {
+      if (!menuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('animate-slideDown');
+      }
+    });
+
+    // Close menu when clicking a link
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('animate-slideDown');
+      });
+    });
+  }
+</script>
+
+<style>
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slideDown {
+    animation: slideDown 0.3s ease-out forwards;
+  }
+</style> 

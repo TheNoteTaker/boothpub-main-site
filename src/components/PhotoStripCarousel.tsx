@@ -1,89 +1,63 @@
-import { useRef, useEffect, useState } from 'react';
-import { motion, useAnimationFrame } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
-const PHOTOS = [
-  "https://images.unsplash.com/photo-1532635241-17e820acc59f?w=300&h=500&fit=crop",
-  "https://images.unsplash.com/photo-1630567804048-5f4ffa2ff0e7?w=300&h=500&fit=crop",
-  "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=300&h=500&fit=crop",
-  "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=300&h=500&fit=crop",
-  "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=300&h=500&fit=crop",
-  "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=500&fit=crop",
+const images = [
+  'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80',
 ];
 
-const SCROLL_SPEED = 1;
-
 export function PhotoStripCarousel() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef(0);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  useAnimationFrame(() => {
-    if (!containerRef.current) return;
-    
-    scrollRef.current += SCROLL_SPEED;
-    
-    // Reset when we've scrolled one full width
-    if (scrollRef.current >= containerRef.current.scrollWidth / 2) {
-      scrollRef.current = 0;
-    }
-    
-    containerRef.current.scrollLeft = scrollRef.current;
-  });
-
   return (
-    <motion.div 
-      className="absolute bottom-0 left-0 right-0 h-32 overflow-hidden bg-gradient-to-t from-white/80 to-transparent z-20"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-    >
-      <motion.div
-        ref={containerRef}
-        className="flex gap-2 whitespace-nowrap overflow-x-hidden py-2"
-        style={{ width: '200%' }} // Double width for seamless loop
-      >
-        <div className="inline-flex">
-          {PHOTOS.map((src, i) => (
-            <div 
-              key={`strip-1-${i}`} 
-              className="relative w-16 group"
+    <div className="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-white via-white to-transparent">
+      <div className="relative overflow-hidden whitespace-nowrap bg-[#2F505F] h-36 shadow-xl film-grain">
+        <div className="inline-flex animate-scroll">
+          {[...images, ...images, ...images].map((src, index) => (
+            <div
+              key={index}
+              className="relative inline-block w-48 overflow-hidden"
             >
-              <div className="h-24 bg-white rounded shadow-md overflow-hidden border-2 border-white transform-gpu transition-all duration-300">
-                <img
-                  src={src}
-                  alt={`Event photo ${i + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-1 left-0 right-0 flex justify-between px-1">
-                <div className="w-2 h-2 bg-black rounded-full"></div>
-                <div className="w-2 h-2 bg-black rounded-full"></div>
+              {/* Film strip frame */}
+              <div className="h-36 px-2">
+                {/* Top sprocket holes */}
+                <div className="h-6 flex items-center justify-between px-1">
+                  {[0, 1, 2].map((i) => (
+                    <div 
+                      key={`hole-top-${i}`} 
+                      className="w-2 h-2 rounded-full bg-white/20 shrink-0"
+                    ></div>
+                  ))}
+                </div>
+                
+                {/* Photo area */}
+                <div className="relative h-24">
+                  <img
+                    src={src}
+                    alt={`Event photo ${(index % images.length) + 1}`}
+                    className="object-cover w-full h-full brightness-90 group-hover:brightness-110 transition-all duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-50"></div>
+                </div>
+
+                {/* Bottom sprocket holes */}
+                <div className="h-6 flex items-center justify-between px-1">
+                  {[0, 1, 2].map((i) => (
+                    <div 
+                      key={`hole-bottom-${i}`} 
+                      className="w-2 h-2 rounded-full bg-white/20 shrink-0"
+                    ></div>
+                  ))}
+                </div>
+
+                {/* Vertical divider */}
+                <div className="absolute right-0 top-0 bottom-0 w-[2px] bg-black/20"></div>
               </div>
             </div>
           ))}
         </div>
-        
-        <div className="inline-flex">
-          {PHOTOS.map((src, i) => (
-            <div 
-              key={`strip-2-${i}`} 
-              className="relative w-16 group"
-            >
-              <div className="h-24 bg-white rounded shadow-md overflow-hidden border-2 border-white transform-gpu transition-all duration-300">
-                <img
-                  src={src}
-                  alt={`Event photo ${i + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-1 left-0 right-0 flex justify-between px-1">
-                <div className="w-2 h-2 bg-black rounded-full"></div>
-                <div className="w-2 h-2 bg-black rounded-full"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

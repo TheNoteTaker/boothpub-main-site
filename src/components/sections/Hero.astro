@@ -15,15 +15,18 @@ import { PhotoStripCarousel } from '../PhotoStripCarousel';
       width={1920}
       height={1080}
       class="object-cover w-full h-full opacity-[0.15]"
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
     />
     <div class="absolute inset-0 bg-gradient-to-b from-white via-white/95 to-white/90"></div>
   </div>
   
   <!-- Floating photo strips layer -->
-  <div class="absolute inset-0">
+  <div class="absolute inset-0 -z-5">
     <div class="hero-container relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {Array.from({ length: 8 }).map((_, i) => (
-        <PhotoStrip client:load index={i} />
+        <PhotoStrip client:idle index={i} />
       ))}
     </div>
   </div>
@@ -65,7 +68,9 @@ import { PhotoStripCarousel } from '../PhotoStripCarousel';
   </div>
   
   <!-- Bottom carousel layer -->
-  <PhotoStripCarousel client:load />
+  <div class="absolute bottom-0 left-0 right-0 z-20">
+    <PhotoStripCarousel client:load />
+  </div>
 </section>
 
 <style>
