@@ -23,15 +23,27 @@ export function PhotoStrip({ index, className, onRemove }: PhotoStripProps) {
   const baseY = useRef(0);
   const [isFlashing, setIsFlashing] = useState(false);
   const [colorScheme] = useState(COLOR_SCHEMES[index % COLOR_SCHEMES.length]);
+  const elementRef = useRef<HTMLDivElement>(null);
   
   const handleClick = async () => {
+    if (isFlashing) return; // Prevent double-clicks
+    
+    // Stop the floating animation immediately
+    await controls.stop();
+    
     setIsFlashing(true);
-    await controls.start({
-      scale: [1, 1.2, 0],
-      opacity: [1, 1, 0],
-      transition: { duration: 0.5, ease: "easeOut" }
-    });
-    onRemove?.();
+    try {
+      await controls.start({
+        scale: [1, 1.2, 0],
+        opacity: [1, 1, 0],
+        transition: { duration: 0.5, ease: "easeOut" }
+      });
+      // Only call onRemove after animation is complete
+      onRemove?.();
+    } catch (error) {
+      // Animation was interrupted, still remove the strip
+      onRemove?.();
+    }
   };
 
   useEffect(() => {
@@ -55,8 +67,8 @@ export function PhotoStrip({ index, className, onRemove }: PhotoStripProps) {
       const zones = [
         // Top zone
         { x: [0, width], y: [0, contentZone.top] },
-        // Bottom zone
-        { x: [0, width], y: [contentZone.bottom, height * 0.85] },
+        // Bottom zone (above carousel)
+        { x: [0, width], y: [contentZone.bottom, height - 180] }, // 180px from bottom to stay above carousel
         // Left zone
         { x: [0, contentZone.left], y: [contentZone.top, contentZone.bottom] },
         // Right zone
@@ -76,32 +88,26 @@ export function PhotoStrip({ index, className, onRemove }: PhotoStripProps) {
     const startAnimation = () => {
       const randomRotation = Math.random() * 90 - 45;
       
+      // First set initial position instantly
       controls.start({
-        x: [
-          baseX.current,
-          baseX.current + FLOAT_RANGE,
-          baseX.current - FLOAT_RANGE,
-          baseX.current
-        ],
-        y: [
-          baseY.current,
-          baseY.current - FLOAT_RANGE,
-          baseY.current + FLOAT_RANGE,
-          baseY.current
-        ],
-        rotate: [
-          randomRotation,
-          randomRotation + ROTATION_RANGE,
-          randomRotation - ROTATION_RANGE,
-          randomRotation
-        ],
-        transition: {
-          duration: ANIMATION_DURATION + (index * 2),
-          repeat: Infinity,
-          repeatType: "reverse",
-          ease: "easeInOut",
-          times: [0, 0.33, 0.66, 1]
-        }
+        x: baseX.current,
+        y: baseY.current,
+        rotate: randomRotation,
+        transition: { duration: 0 }
+      }).then(() => {
+        // Then start the floating animation
+        controls.start({
+          x: [baseX.current, baseX.current + FLOAT_RANGE, baseX.current - FLOAT_RANGE, baseX.current],
+          y: [baseY.current, baseY.current - FLOAT_RANGE, baseY.current + FLOAT_RANGE, baseY.current],
+          rotate: [randomRotation, randomRotation + ROTATION_RANGE, randomRotation - ROTATION_RANGE, randomRotation],
+          transition: {
+            duration: ANIMATION_DURATION + (index * 2),
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+            times: [0, 0.33, 0.66, 1]
+          }
+        });
       });
     };
 
@@ -112,36 +118,38 @@ export function PhotoStrip({ index, className, onRemove }: PhotoStripProps) {
   }, [controls, index]);
 
   return (
-    <>
-      {isFlashing && (
-        <div className="fixed inset-0 bg-white animate-flash pointer-events-none" />
-      )}
-      <motion.div
-        animate={controls}
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ 
-          opacity: [0, 1],
-          scale: [0.9, 1],
-          transition: { duration: 0.8, ease: "easeOut" }
-        }}
-        whileHover={{ 
-          scale: 1.15,
-          transition: { duration: 0.4 }
-        }}
-        style={{
-          position: 'absolute',
-          left: baseX.current,
-          top: baseY.current
-        }}
-        onClick={handleClick}
-        className={`cursor-pointer z-10 touch-none select-none ${className || ''}`}
-      >
-        <div className="w-16 h-48 bg-white rounded-md shadow-lg overflow-hidden border-4 border-white transform-gpu hover:shadow-xl transition-all duration-300 hover:border-[#F9CC9A]">
-          <div className={`h-1/3 ${colorScheme[0]} mb-1`}></div>
-          <div className={`h-1/3 ${colorScheme[1]} mb-1`}></div>
-          <div className={`h-1/3 ${colorScheme[2]}`}></div>
-        </div>
-      </motion.div>
-    </>
+    <motion.div
+      ref={elementRef}
+      animate={controls}
+      initial={{ 
+        opacity: 0, 
+        scale: 0.9,
+        x: baseX.current,
+        y: baseY.current
+      }}
+      whileInView={{ 
+        opacity: [0, 1],
+        scale: [0.9, 1],
+        transition: { duration: 0.8, ease: "easeOut" }
+      }}
+      whileHover={{ 
+        scale: 1.15,
+        transition: { duration: 0.4 }
+      }}
+      style={{
+        position: 'absolute'
+      }}
+      onClick={handleClick}
+      className={`cursor-pointer z-10 touch-none select-none ${className || ''}`}
+    >
+      <div className="w-16 h-48 bg-white rounded-md shadow-lg overflow-hidden border-4 border-white transform-gpu hover:shadow-xl transition-all duration-300 hover:border-[#F9CC9A] relative">
+        {isFlashing && (
+          <div className="absolute inset-0 bg-white animate-[flash_500ms_ease-out] pointer-events-none z-50" />
+        )}
+        <div className={`h-1/3 ${colorScheme[0]} mb-1`}></div>
+        <div className={`h-1/3 ${colorScheme[1]} mb-1`}></div>
+        <div className={`h-1/3 ${colorScheme[2]}`}></div>
+      </div>
+    </motion.div>
   );
 }
