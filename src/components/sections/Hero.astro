@@ -3,29 +3,34 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { Icon } from '@/components/ui/Icon';
 import { Image } from 'astro:assets';
 import { PhotoStrip } from '../PhotoStrip';
+import { PhotoStripCarousel } from '../PhotoStripCarousel';
 ---
 
-<section class="relative overflow-hidden min-h-[90vh] flex items-center justify-center py-16 sm:py-24">
-  <div class="absolute inset-0 -z-10 bg-gradient-to-br from-white via-white/95 to-white/90">
+<section class="relative overflow-hidden min-h-screen flex items-center justify-center">
+  <!-- Background image layer -->
+  <div class="absolute inset-0 -z-10">
     <Image
-      src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80"
-      alt="Background"
+      src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80"
+      alt="Background Pattern"
       width={1920}
       height={1080}
-      class="object-cover w-full h-full opacity-[0.12] scale-105"
+      class="object-cover w-full h-full opacity-[0.15]"
     />
+    <div class="absolute inset-0 bg-gradient-to-b from-white via-white/95 to-white/90"></div>
   </div>
   
+  <!-- Floating photo strips layer -->
   <div class="absolute inset-0">
     <div class="hero-container relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {Array.from({ length: 12 }).map((_, i) => (
+      {Array.from({ length: 8 }).map((_, i) => (
         <PhotoStrip client:load index={i} />
       ))}
     </div>
   </div>
 
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pointer-events-none">
-    <div class="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
+  <!-- Content layer -->
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pointer-events-none py-16 sm:py-20">
+    <div class="max-w-3xl md:mx-auto md:text-center">
       <div class="flex justify-center mb-6 sm:mb-8">
         <div class="relative animate-float pointer-events-auto group">
           <Icon name="Camera" className="w-10 h-10 sm:w-12 sm:h-12 text-[#D75E1F]" client:load />
@@ -35,10 +40,10 @@ import { PhotoStrip } from '../PhotoStrip';
       <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#2F505F] animate-slide-up">
         Make Your Event Unforgettable with Booth Pub
       </h1>
-      <p class="mt-6 sm:mt-8 text-lg sm:text-xl tracking-tight text-muted-foreground animate-fade-in max-w-2xl mx-auto">
+      <p class="mt-6 sm:mt-8 text-lg sm:text-xl tracking-tight text-muted-foreground animate-fade-in">
         Create lasting memories with our premium photo booth experience, complete with optional bartending services.
       </p>
-      <div class="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center gap-4 sm:gap-x-6">
+      <div class="mt-10 sm:mt-12 flex flex-col sm:flex-row justify-center gap-4 sm:gap-x-6">
         <ButtonLink
           href="#quote"
           variant="default"
@@ -57,13 +62,15 @@ import { PhotoStrip } from '../PhotoStrip';
         </ButtonLink>
       </div>
     </div>
-    <div class="mt-12 sm:mt-20 pointer-events-auto relative z-10">
-      <Image
-        class="rounded-xl shadow-xl ring-1 ring-gray-400/10 w-full transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl relative z-10"
-        src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80"
-        alt="Friends having fun in a photobooth"
-        width={1200}
-        height={675}
-      />
-    </div>
   </div>
+  
+  <!-- Bottom carousel layer -->
+  <PhotoStripCarousel client:load />
+</section>
+
+<style>
+  .hero-container {
+    position: relative;
+    overflow: hidden;
+  }
+</style>
