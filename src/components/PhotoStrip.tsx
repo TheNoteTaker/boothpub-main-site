@@ -29,9 +29,10 @@ export function PhotoStrip({ index, initialX, initialY, initialRotation, classNa
   const [isFlashing, setIsFlashing] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   const [colorScheme] = useState(COLOR_SCHEMES[index % COLOR_SCHEMES.length]);
+  const stripRef = useRef<HTMLDivElement>(null);
   
   const handleClick = async () => {
-    if (isRemoving) return;
+    if (isRemoving || !stripRef.current) return;
     setIsRemoving(true);
     setIsFlashing(true);
     
@@ -50,17 +51,17 @@ export function PhotoStrip({ index, initialX, initialY, initialRotation, classNa
   };
 
   const checkBoundaries = (x: number, y: number, containerRect: DOMRect) => {
-    const stripWidth = 32;
-    const stripHeight = 96;
+    const stripWidth = 32; // Half of the actual width (64px)
+    const stripHeight = stripRef.current?.offsetHeight || 96;
     
-    // Check horizontal boundaries
-    if (x - stripWidth < 0 || x + stripWidth > containerRect.width) {
+    // Check horizontal boundaries with wider range
+    if (x - stripWidth < -16 || x + stripWidth > containerRect.width + 16) {
       directionX.current *= -1;
       return true;
     }
     
     // Check vertical boundaries
-    if (y - stripHeight < 0 || y + stripHeight > containerRect.height * 0.85) {
+    if (y - stripHeight/2 < 0 || y + stripHeight/2 > containerRect.height * 0.85) {
       directionY.current *= -1;
       return true;
     }
@@ -79,7 +80,7 @@ export function PhotoStrip({ index, initialX, initialY, initialRotation, classNa
       lastTime = currentTime;
 
       const container = document.querySelector('.hero-container');
-      if (!container) return;
+      if (!container || !stripRef.current) return;
       
       const containerRect = container.getBoundingClientRect();
       const movement = moveSpeed * deltaTime;
@@ -115,6 +116,7 @@ export function PhotoStrip({ index, initialX, initialY, initialRotation, classNa
 
   return (
     <motion.div
+      ref={stripRef}
       animate={controls}
       initial={{ 
         opacity: 0, 
@@ -140,7 +142,7 @@ export function PhotoStrip({ index, initialX, initialY, initialRotation, classNa
       onClick={handleClick}
       className={`cursor-pointer z-10 touch-none select-none ${className || ''}`}
     >
-      <div className="w-16 h-48 bg-white rounded-md shadow-lg overflow-hidden border-4 border-white transform-gpu hover:shadow-xl transition-all duration-300 hover:border-[#F9CC9A] relative">
+      <div className="w-16 md:w-20 h-48 md:h-56 bg-white rounded-md shadow-lg overflow-hidden border-4 border-white transform-gpu hover:shadow-xl transition-all duration-300 hover:border-[#F9CC9A] relative">
         <div className={`h-1/3 ${colorScheme[0]} mb-1`}></div>
         <div className={`h-1/3 ${colorScheme[1]} mb-1`}></div>
         <div className={`h-1/3 ${colorScheme[2]}`}></div>
