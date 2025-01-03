@@ -2,8 +2,8 @@
 import { ButtonLink } from "@/components/ui/button-link";
 import { Icon } from '@/components/ui/Icon';
 import { Image } from 'astro:assets';
-import { PhotoStripCarousel } from '../PhotoStripCarousel';
 import { PhotoStripContainer } from '../PhotoStripContainer';
+import { FilmStrip } from '../FilmStrip';
 ---
 
 <section class="relative overflow-hidden h-[100vh] flex items-center justify-center">
@@ -65,9 +65,9 @@ import { PhotoStripContainer } from '../PhotoStripContainer';
     </div>
   </div>
   
-  <!-- Bottom carousel layer -->
-  <div class="absolute bottom-0 left-0 right-0 z-20 h-[15vh] min-h-[120px] max-h-[180px]">
-    <PhotoStripCarousel client:load />
+  <!-- Bottom film strip layer -->
+  <div class="absolute bottom-0 left-0 right-0 z-20">
+    <FilmStrip client:load />
   </div>
 </section>
 
