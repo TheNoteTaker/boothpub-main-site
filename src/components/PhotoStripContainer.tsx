@@ -61,43 +61,46 @@ export function PhotoStripContainer() {
 
   const createNewStrip = () => {
     const pos = getRandomPosition();
-    const newId = nextId;
-    setNextId(prev => prev + 1);
     return {
-      id: newId,
+      id: nextId,
       initialX: pos.x,
       initialY: pos.y,
       rotation: Math.random() * 45 - 22.5
     };
   };
 
+  const initializeStrips = () => {
+    const targetCount = calculateStripCount();
+    const newStrips = Array.from(
+      { length: targetCount },
+      () => createNewStrip()
+    );
+    setStrips(newStrips);
+    setNextId(targetCount);
+  };
+
+  const updateStripCount = () => {
+    const targetCount = calculateStripCount();
+    setStrips(current => {
+      if (current.length === targetCount) return current;
+      if (current.length < targetCount) {
+        const newStrips = Array.from(
+          { length: targetCount - current.length },
+          () => createNewStrip()
+        );
+        return [...current, ...newStrips];
+      }
+      return current.slice(0, targetCount);
+    });
+  };
+
   useEffect(() => {
     // Initial setup with delay to ensure container is ready
-    const initTimer = setTimeout(() => {
-      const targetCount = calculateStripCount();
-      const initialStrips = Array.from(
-        { length: targetCount },
-        () => createNewStrip()
-      );
-      setStrips(initialStrips);
-    }, 100);
+    const initTimer = setTimeout(initializeStrips, 100);
     
     // Handle window resize
     const resizeHandler = () => {
-      const resizeTimer = setTimeout(() => {
-        const targetCount = calculateStripCount();
-        setStrips(current => {
-          if (current.length === targetCount) return current;
-          if (current.length < targetCount) {
-            const newStrips = Array.from(
-              { length: targetCount - current.length },
-              () => createNewStrip()
-            );
-            return [...current, ...newStrips];
-          }
-          return current.slice(0, targetCount);
-        });
-      }, 100);
+      const resizeTimer = setTimeout(updateStripCount, 100);
       return () => clearTimeout(resizeTimer);
     };
     window.addEventListener('resize', resizeHandler);
@@ -113,8 +116,15 @@ export function PhotoStripContainer() {
       const newStrips = current.filter(strip => strip.id !== stripId);
       // Create a new strip after removal animation completes
       setTimeout(() => {
-        const newStrip = createNewStrip();
-        setStrips(prev => [...prev, newStrip]);
+        setStrips(prev => {
+          const targetCount = calculateStripCount();
+          if (prev.length < targetCount) {
+            const newStrip = createNewStrip();
+            setNextId(prev => prev + 1);
+            return [...prev, newStrip];
+          }
+          return prev;
+        });
       }, 500);
       return newStrips;
     });

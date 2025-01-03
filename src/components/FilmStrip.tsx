@@ -16,7 +16,7 @@ export function FilmStrip() {
       
       {/* Film strip container */}
       <div className="absolute bottom-4 left-0 right-0">
-        <div className="relative overflow-hidden whitespace-nowrap bg-[#2F505F] h-48 shadow-xl film-grain border-t border-b border-black/30">
+        <div className="relative overflow-hidden whitespace-nowrap bg-[#2F505F] h-48 shadow-xl film-grain">
           <div className="inline-flex animate-scroll">
             {[...images, ...images, ...images].map((src, index) => (
               <div
@@ -24,7 +24,7 @@ export function FilmStrip() {
                 className="relative inline-block w-72 overflow-hidden"
               >
                 {/* Film strip frame */}
-                <div className="h-48 px-1 border-r border-black/30">
+                <div className="h-48 px-1">
                   {/* Top sprocket holes */}
                   <div className="h-5 flex items-center justify-between px-2">
                     {[0, 1, 2].map((i) => (
@@ -54,6 +54,9 @@ export function FilmStrip() {
                       ></div>
                     ))}
                   </div>
+
+                  {/* Vertical divider */}
+                  <div className="absolute right-0 top-0 bottom-0 w-[0.5px] bg-black/20"></div>
                 </div>
               </div>
             ))}
