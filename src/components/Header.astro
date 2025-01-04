@@ -1,4 +1,13 @@
 ---
+import { Image } from 'astro:assets';
+import { Icon } from '@/components/ui/Icon';
+
+const navLinks = [
+  { href: '#demo', label: 'Demo' },
+  { href: '#features', label: 'Features' },
+  { href: '#gallery', label: 'Gallery' },
+  { href: '#contact', label: 'Contact' },
+];
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-sm border-b border-white/5">
@@ -13,30 +22,14 @@
 
       <!-- Navigation Links -->
       <nav class="hidden md:flex space-x-8">
-        <a 
-          href="#demo" 
-          class="text-gray-300 hover:text-white relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-white after:transition-all after:duration-300 transition-all duration-300"
-        >
-          Demo
-        </a>
-        <a 
-          href="#features" 
-          class="text-gray-300 hover:text-white relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-white after:transition-all after:duration-300 transition-all duration-300"
-        >
-          Features
-        </a>
-        <a 
-          href="#gallery" 
-          class="text-gray-300 hover:text-white relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-white after:transition-all after:duration-300 transition-all duration-300"
-        >
-          Gallery
-        </a>
-        <a 
-          href="#contact" 
-          class="text-gray-300 hover:text-white relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-white after:transition-all after:duration-300 transition-all duration-300"
-        >
-          Contact
-        </a>
+        {navLinks.map(({ href, label }) => (
+          <a 
+            href={href}
+            class="text-gray-300 hover:text-white relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-white after:transition-all after:duration-300 transition-all duration-300"
+          >
+            {label}
+          </a>
+        ))}
       </nav>
 
       <!-- CTA Button -->
@@ -57,19 +50,7 @@
           aria-label="Open menu"
           id="menuButton"
         >
-          <svg
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
+          <Icon name="Menu" className="h-6 w-6" client:load />
         </button>
       </div>
     </div>
@@ -78,30 +59,14 @@
   <!-- Mobile menu (hidden by default) -->
   <div class="hidden md:hidden transition-all duration-300 ease-in-out" id="mobileMenu">
     <div class="px-2 pt-2 pb-3 space-y-1 bg-black/60 backdrop-blur-lg">
-      <a
-        href="#demo"
-        class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
-      >
-        Demo
-      </a>
-      <a
-        href="#features"
-        class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
-      >
-        Features
-      </a>
-      <a
-        href="#gallery"
-        class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
-      >
-        Gallery
-      </a>
-      <a
-        href="#contact"
-        class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
-      >
-        Contact
-      </a>
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
+        >
+          {label}
+        </a>
+      ))}
       <a
         href="#book"
         class="block px-3 py-2 text-white bg-white/10 hover:bg-white hover:text-black rounded-lg transition-all duration-300 transform hover:translate-x-1"
@@ -113,23 +78,26 @@
 </header>
 
 <script>
-  const menuButton = document.getElementById('menuButton');
-  const mobileMenu = document.getElementById('mobileMenu');
+  // Use TypeScript for better type safety
+  const menuButton = document.getElementById('menuButton') as HTMLButtonElement | null;
+  const mobileMenu = document.getElementById('mobileMenu') as HTMLDivElement | null;
 
   if (menuButton && mobileMenu) {
-    menuButton.addEventListener('click', () => {
+    const toggleMenu = () => {
       mobileMenu.classList.toggle('hidden');
-      // Add slide animation
       if (!mobileMenu.classList.contains('hidden')) {
         mobileMenu.classList.add('animate-slideDown');
       } else {
         mobileMenu.classList.remove('animate-slideDown');
       }
-    });
+    };
+
+    menuButton.addEventListener('click', toggleMenu);
 
     // Close menu when clicking outside
     document.addEventListener('click', (event) => {
-      if (!menuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+      const target = event.target as HTMLElement;
+      if (!menuButton.contains(target) && !mobileMenu.contains(target)) {
         mobileMenu.classList.add('hidden');
         mobileMenu.classList.remove('animate-slideDown');
       }

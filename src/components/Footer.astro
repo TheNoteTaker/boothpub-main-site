@@ -1,21 +1,114 @@
 ---
+import { Icon } from '@/components/ui/Icon';
+
 const currentYear = new Date().getFullYear();
+
+const contactInfo = {
+  email: 'contact@boothpub.com',
+  phone: '(555) 123-4567',
+  address: 'Los Angeles, CA'
+};
+
+const socialLinks = [
+  { name: 'Instagram', icon: 'Instagram', href: '#' },
+  { name: 'Facebook', icon: 'Facebook', href: '#' },
+  { name: 'Twitter', icon: 'Twitter', href: '#' }
+];
+
+const footerLinks = [
+  {
+    title: 'Services',
+    links: [
+      { label: 'Photo Booth', href: '/services/photo-booth' },
+      { label: 'Bartending', href: '/services/bartending' },
+      { label: 'Packages', href: '/packages' }
+    ]
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About Us', href: '/about' },
+      { label: 'Contact', href: '/contact' },
+      { label: 'Blog', href: '/blog' }
+    ]
+  }
+];
 ---
 
 <footer class="bg-[#2F505F] text-white py-12">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Brand Section -->
+      <div class="col-span-1">
+        <h2 class="text-2xl font-bold mb-4">Booth Pub</h2>
+        <p class="text-gray-300 mb-4">
+          Creating unforgettable memories through premium photo booth and bartending experiences.
+        </p>
+      </div>
+
+      <!-- Contact Info -->
       <div>
         <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
-        <ul class="space-y-2">
-          <li>Email: contact@boothpub.com</li>
-          <li>Phone: (555) 123-4567</li>
+        <ul class="space-y-2 text-gray-300">
+          <li class="flex items-center gap-2">
+            <Icon name="Mail" className="w-4 h-4" client:load />
+            <a href={`mailto:${contactInfo.email}`} class="hover:text-white transition-colors">
+              {contactInfo.email}
+            </a>
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon name="Phone" className="w-4 h-4" client:load />
+            <a href={`tel:${contactInfo.phone.replace(/[^0-9]/g, '')}`} class="hover:text-white transition-colors">
+              {contactInfo.phone}
+            </a>
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon name="MapPin" className="w-4 h-4" client:load />
+            <span>{contactInfo.address}</span>
+          </li>
         </ul>
       </div>
-      <!-- Add more sections as needed -->
+
+      <!-- Quick Links -->
+      {footerLinks.map(section => (
+        <div>
+          <h3 class="text-lg font-semibold mb-4">{section.title}</h3>
+          <ul class="space-y-2">
+            {section.links.map(link => (
+              <li>
+                <a 
+                  href={link.href}
+                  class="text-gray-300 hover:text-white transition-colors"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
-    <div class="mt-8 pt-8 border-t border-white/10 text-center">
-      <p>&copy; {currentYear} Booth Pub. All rights reserved.</p>
+
+    <!-- Bottom Section -->
+    <div class="mt-12 pt-8 border-t border-white/10">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-gray-300 text-sm">
+          &copy; {currentYear} Booth Pub. All rights reserved.
+        </p>
+        
+        <!-- Social Links -->
+        <div class="flex gap-4">
+          {socialLinks.map(({ name, icon, href }) => (
+            <a
+              href={href}
+              class="text-gray-300 hover:text-white transition-colors"
+              aria-label={`Follow us on ${name}`}
+            >
+              <Icon name={icon} className="w-5 h-5" client:load />
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   </div>
 </footer> 

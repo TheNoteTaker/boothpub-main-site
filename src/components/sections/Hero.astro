@@ -4,22 +4,33 @@ import { Icon } from '@/components/ui/Icon';
 import { Image } from 'astro:assets';
 import { PhotoStripContainer } from '../PhotoStripContainer';
 import { FilmStrip } from '../FilmStrip';
+import { optimizeImage } from '@/utils/images';
+
+const heroImage = await optimizeImage({
+  src: "https://images.unsplash.com/photo-1532635241-17e820acc59f?auto=format&fit=crop&q=80",
+  alt: "Photo Booth Event Background",
+  width: 1920,
+  height: 1080,
+  format: 'webp',
+  quality: 85
+});
 ---
 
 <section class="relative overflow-hidden h-[100vh] flex items-center justify-center">
+  <!-- Background gradient layer -->
+  <div class="absolute inset-0 bg-gradient-to-t from-[#D75E1F] to-[#2F505F] -z-20"></div>
+  
   <!-- Background image layer -->
   <div class="absolute inset-0 -z-10">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black mix-blend-multiply"></div>
     <Image
-      src="https://images.unsplash.com/photo-1532635241-17e820acc59f?auto=format&fit=crop&q=80"
-      alt="Photo Booth Event Background"
-      width={1920}
-      height={1080}
-      class="object-cover w-full h-full opacity-30"
+      {...heroImage}
+      class="object-cover w-full h-full"
       loading="eager"
       fetchpriority="high"
       decoding="sync"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/100"></div>
   </div>
   
   <!-- Floating photo strips layer -->
@@ -84,5 +95,34 @@ import { FilmStrip } from '../FilmStrip';
 
   .animate-flash {
     animation: flash 0.3s ease-out forwards;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
   }
 </style>

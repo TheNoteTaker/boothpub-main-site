@@ -1,27 +1,27 @@
 import { motion } from 'framer-motion';
 
 const images = [
-  'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80',
+  '/assets/photos/events/event-1.jpg',
+  '/assets/photos/events/event-2.jpg',
+  '/assets/photos/events/event-3.jpg',
+  '/assets/photos/events/event-4.jpg',
+  '/assets/photos/events/event-5.jpg',
 ];
 
 export function FilmStrip() {
   return (
     <div className="absolute bottom-0 left-0 right-0 h-[15vh] sm:h-[18vh] md:h-[20vh] lg:h-[22vh] max-h-[180px] mb-8">
       {/* Container with responsive height */}
-      <div className="absolute bottom-0 left-0 right-0 h-full">
+      <div className="absolute bottom-0 left-0 right-0 h-[94%]">
         {/* Main film strip */}
-        <div className="relative h-full bg-[#2F505F]/80 shadow-lg film-grain overflow-hidden">
+        <div className="relative h-full bg-black/30 shadow-lg film-grain overflow-hidden">
           {/* Borders */}
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-black/20 z-10" />
           <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-black/20 z-10" />
           
           {/* Scrolling content container */}
-          <div className="h-full py-[1%]">
-            <div className="inline-flex animate-scroll whitespace-nowrap h-full">
+          <div className="h-full flex items-center">
+            <div className="inline-flex animate-scroll whitespace-nowrap h-[98%]">
               {[...images, ...images, ...images].map((src, index) => (
                 <div
                   key={index}
@@ -35,19 +35,19 @@ export function FilmStrip() {
                     <div className="absolute right-0 top-0 bottom-0 w-[1px] bg-black/20" />
                     
                     {/* Content structure with proportional heights */}
-                    <div className="flex flex-col h-full">
+                    <div className="flex flex-col h-full justify-between">
                       {/* Top sprocket holes */}
-                      <div className="h-[12%] flex items-center justify-between px-[12%]">
+                      <div className="h-[6%] flex items-center justify-between px-[12%]">
                         {[0, 1].map((i) => (
                           <div 
                             key={`hole-top-${i}`} 
-                            className="w-[0.45em] h-[0.45em] rounded-full bg-black/25 shrink-0"
+                            className="w-[0.3em] h-[0.3em] rounded-full bg-black/25 shrink-0"
                           />
                         ))}
                       </div>
                       
                       {/* Photo area - with proportional height */}
-                      <div className="h-[76%] relative">
+                      <div className="h-[88%] relative">
                         <div className="absolute inset-0 p-[1%]">
                           <div className="relative w-full h-full overflow-hidden">
                             <img
@@ -61,11 +61,11 @@ export function FilmStrip() {
                       </div>
 
                       {/* Bottom sprocket holes */}
-                      <div className="h-[12%] flex items-center justify-between px-[12%]">
+                      <div className="h-[6%] flex items-center justify-between px-[12%]">
                         {[0, 1].map((i) => (
                           <div 
                             key={`hole-bottom-${i}`} 
-                            className="w-[0.45em] h-[0.45em] rounded-full bg-black/25 shrink-0"
+                            className="w-[0.3em] h-[0.3em] rounded-full bg-black/25 shrink-0"
                           />
                         ))}
                       </div>

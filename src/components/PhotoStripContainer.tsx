@@ -13,6 +13,7 @@ export function PhotoStripContainer() {
   const [nextId, setNextId] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
   const targetCount = useRef<number>(4);
+  const isRemoving = useRef<Set<number>>(new Set());
 
   const calculateStripCount = useCallback(() => {
     if (typeof window === 'undefined') return 4;
@@ -57,7 +58,6 @@ export function PhotoStripContainer() {
       const newCount = calculateStripCount();
       if (newCount !== targetCount.current) {
         targetCount.current = newCount;
-        // Adjust strip count if needed
         setStrips(current => {
           if (current.length > newCount) {
             return current.slice(0, newCount);
@@ -85,7 +85,17 @@ export function PhotoStripContainer() {
   }, [calculateStripCount, isInitialized]);
 
   const removeStrip = useCallback((stripId: number) => {
+    // Prevent duplicate removals
+    if (isRemoving.current.has(stripId)) return;
+    isRemoving.current.add(stripId);
+
     setStrips(current => {
+      // Safety check: don't remove if we're at minimum count
+      if (current.length <= 1) {
+        isRemoving.current.delete(stripId);
+        return current;
+      }
+
       const remainingStrips = current.filter(strip => strip.id !== stripId);
       
       // Create one new strip to replace the removed one
@@ -97,6 +107,12 @@ export function PhotoStripContainer() {
       };
       
       setNextId(prev => prev + 1);
+      
+      // Remove from tracking after successful removal
+      setTimeout(() => {
+        isRemoving.current.delete(stripId);
+      }, 500);
+
       return [...remainingStrips, newStrip];
     });
   }, [nextId]);
