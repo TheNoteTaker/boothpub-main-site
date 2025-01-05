@@ -100,8 +100,10 @@ const galleryImages = [
           <div class="mt-8 flex items-center gap-4">
             <Image
               {...testimonial.image}
+              alt={`Profile picture of ${testimonial.author}`}
+              width={400}
+              height={400}
               class="h-10 w-10 rounded-full object-cover"
-              alt={`Portrait of ${testimonial.author}`}
             />
             <div>
               <div class="font-semibold text-[#2F505F]">{testimonial.author}</div>
@@ -118,8 +120,10 @@ const galleryImages = [
           <div class="relative aspect-[4/3] overflow-hidden rounded-xl">
             <Image
               {...image}
+              alt="Photo booth event gallery image"
+              width={1200}
+              height={900}
               class="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
-              alt={image.alt}
             />
           </div>
         ))}

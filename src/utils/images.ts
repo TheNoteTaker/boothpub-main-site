@@ -1,5 +1,5 @@
-import type { ImageMetadata, LocalImageProps, RemoteImageProps } from 'astro';
-import { getImage, type ImageTransform } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import { IMAGE_PATHS } from './image-paths';
 
 export interface OptimizeImageOptions {
@@ -11,6 +11,10 @@ export interface OptimizeImageOptions {
   format?: 'webp' | 'avif' | 'png' | 'jpg';
   quality?: number;
   sizes?: string;
+}
+
+export interface LocalImageOptions extends Omit<OptimizeImageOptions, 'src'> {
+  alt: string;  // Make alt explicitly required
 }
 
 export const DEFAULT_IMAGE_CONFIG = {
@@ -36,7 +40,7 @@ export const defaultSizes: ResponsiveImageSizes = {
 };
 
 export function generateSrcSet(
-  transform: ImageTransform,
+  transform: { src: string },
   sizes: ResponsiveImageSizes = defaultSizes
 ): string {
   return Object.values(sizes)
@@ -78,11 +82,13 @@ export async function optimizeImage({
   });
 }
 
-export async function getLocalImage(path: string, options: Partial<LocalImageProps> = {}) {
+export async function getLocalImage(path: string, options: LocalImageOptions) {
   const image = await import(`../../public${path}`);
+  if (!options.alt) {
+    throw new Error(`Alt text is required for image: ${path}`);
+  }
   return optimizeImage({
     src: image.default,
-    alt: options.alt || '',
     ...options,
   });
 }
