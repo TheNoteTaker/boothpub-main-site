@@ -1,0 +1,143 @@
+---
+import { Icon } from '@/components/ui/Icon';
+import { Image } from 'astro:assets';
+import { optimizeImage } from '@/utils/images';
+
+const testimonials = [
+  {
+    quote: "The photo booth was the highlight of our wedding! Our guests couldn't stop talking about the amazing cocktails and photo experience.",
+    author: "Sarah & Mike",
+    role: "Wedding Couple",
+    image: await optimizeImage({
+      src: "https://images.unsplash.com/photo-1623778517507-0215e5778338",
+      alt: "Sarah and Mike, a happy wedding couple smiling at their reception",
+      width: 400,
+      height: 400,
+      format: 'webp',
+      quality: 85
+    })
+  },
+  {
+    quote: "Booth Pub brought our corporate event to life. The professional setup and service exceeded our expectations.",
+    author: "David Chen",
+    role: "Event Director",
+    image: await optimizeImage({
+      src: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
+      alt: "David Chen, Event Director, in professional attire",
+      width: 400,
+      height: 400,
+      format: 'webp',
+      quality: 85
+    })
+  },
+  {
+    quote: "The soda bar package was perfect for our family reunion. The kids loved the mocktails and everyone enjoyed the photos!",
+    author: "Jennifer Martinez",
+    role: "Party Host",
+    image: await optimizeImage({
+      src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2",
+      alt: "Jennifer Martinez, Party Host, smiling warmly",
+      width: 400,
+      height: 400,
+      format: 'webp',
+      quality: 85
+    })
+  }
+];
+
+const galleryImages = [
+  await optimizeImage({
+    src: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf",
+    alt: "Group of friends laughing and posing with props in our photo booth",
+    width: 1200,
+    height: 900,
+    format: 'webp',
+    quality: 85
+  }),
+  await optimizeImage({
+    src: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7",
+    alt: "Guests enjoying custom cocktails at a Booth Pub event",
+    width: 1200,
+    height: 900,
+    format: 'webp',
+    quality: 85
+  }),
+  await optimizeImage({
+    src: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622",
+    alt: "Wedding party celebrating with our photo booth and bar services",
+    width: 1200,
+    height: 900,
+    format: 'webp',
+    quality: 85
+  })
+];
+---
+
+<section id="testimonials" class="relative overflow-hidden bg-[#F9CC9A]/10 py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-[#2F505F] sm:text-4xl">
+        What Our Clients Say
+      </h2>
+      <p class="mt-4 text-lg text-muted-foreground">
+        Don't just take our word for it - hear from some of our happy clients.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+      {testimonials.map((testimonial) => (
+        <div class="flex flex-col justify-between bg-white rounded-2xl p-8 shadow-sm ring-1 ring-gray-200 hover:shadow-lg transition-all duration-300">
+          <div>
+            <div class="flex gap-1">
+              {[...Array(5)].map(() => (
+                <Icon name="Star" className="h-5 w-5 text-[#D75E1F]" client:load />
+              ))}
+            </div>
+            <div class="mt-6 text-lg leading-7 text-gray-700">
+              "{testimonial.quote}"
+            </div>
+          </div>
+          <div class="mt-8 flex items-center gap-4">
+            <Image
+              {...testimonial.image}
+              class="h-10 w-10 rounded-full object-cover"
+              alt={`Portrait of ${testimonial.author}`}
+            />
+            <div>
+              <div class="font-semibold text-[#2F505F]">{testimonial.author}</div>
+              <div class="text-sm text-muted-foreground">{testimonial.role}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-16">
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {galleryImages.map((image) => (
+          <div class="relative aspect-[4/3] overflow-hidden rounded-xl">
+            <Image
+              {...image}
+              class="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
+              alt={image.alt}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-16 flex justify-center">
+      <a
+        href="#quote"
+        class="inline-flex items-center px-6 py-3 text-base font-medium rounded-lg text-white bg-[#D75E1F] hover:bg-[#2F505F] transition-all duration-300 group"
+      >
+        Start Your Journey
+        <Icon
+          name="ArrowRight"
+          className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300"
+          client:load
+        />
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,89 @@
+---
+import { Icon } from '@/components/ui/Icon';
+
+const steps = [
+  {
+    title: 'Select a Package',
+    description: 'Choose from our photo booth packages with optional bartending services.',
+    icon: 'PackageOpen',
+  },
+  {
+    title: 'We Arrive & Set Up',
+    description: 'Our team handles everything from setup to teardown. Just show us where!',
+    icon: 'Truck',
+  },
+  {
+    title: 'Guests Snap & Sip',
+    description: 'Your guests enjoy instant photos and optional craft beverages.',
+    icon: 'PartyPopper',
+  },
+  {
+    title: 'You Get the Photos',
+    description: 'Take home prints instantly and receive digital copies within 24 hours.',
+    icon: 'Images',
+  },
+];
+---
+
+<section
+  id="how-it-works"
+  class="relative overflow-hidden bg-[#2F505F] py-16 sm:py-24 px-4 sm:px-6"
+>
+  <div class="absolute inset-0 bg-[url('data:image/svg+xml,...')] opacity-5"></div>
+  
+  <div class="relative mx-auto max-w-7xl">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white sm:text-5xl">
+        How It Works
+      </h2>
+      <p class="mt-4 text-lg text-gray-300">
+        From booking to memories, we make the process simple and enjoyable.
+      </p>
+    </div>
+
+    <div class="mt-16 sm:mt-20">
+      <div class="grid grid-cols-1 gap-y-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-0">
+        {steps.map((step, index) => (
+          <div class="group relative">
+            <div class="flex items-center">
+              <div 
+                class="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-[#D75E1F] group-hover:bg-[#F9CC9A] transition-colors duration-300"
+              >
+                <Icon
+                  name={step.icon}
+                  className="h-6 w-6 text-white group-hover:text-[#D75E1F] transition-colors duration-300"
+                  client:load
+                />
+              </div>
+              {index !== steps.length - 1 && (
+                <div class="hidden lg:block absolute left-[3rem] right-0 h-0.5 bg-gradient-to-r from-[#D75E1F] to-transparent"></div>
+              )}
+            </div>
+            <div class="mt-6">
+              <h3 class="text-xl font-semibold text-white group-hover:text-[#F9CC9A] transition-colors duration-300">
+                {step.title}
+              </h3>
+              <p class="mt-2 text-base text-gray-300">
+                {step.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-16 text-center">
+      <a
+        href="#packages"
+        class="inline-flex items-center px-6 py-3 text-base font-medium rounded-lg text-[#2F505F] bg-[#F9CC9A] hover:bg-white transition-all duration-300 group"
+      >
+        View Our Packages
+        <Icon
+          name="ArrowRight"
+          className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300"
+          client:load
+        />
+      </a>
+    </div>
+  </div>
+</section>

@@ -6,17 +6,26 @@ import { PhotoStripContainer } from '../PhotoStripContainer';
 import { FilmStrip } from '../FilmStrip';
 import { optimizeImage } from '@/utils/images';
 
+const heroImageData = {
+  src: "https://images.unsplash.com/photo-1532635241-17e820acc59f",
+  alt: "Photo booth event with people enjoying themselves at a wedding celebration",
+  width: 2400,
+  height: 1600,
+  params: {
+    auto: "format",
+    fit: "crop",
+    q: "80"
+  }
+};
+
 const heroImage = await optimizeImage({
-  src: "https://images.unsplash.com/photo-1532635241-17e820acc59f?auto=format&fit=crop&q=80",
-  alt: "Photo Booth Event Background",
-  width: 1920,
-  height: 1080,
+  ...heroImageData,
   format: 'webp',
   quality: 85
 });
 ---
 
-<section class="relative overflow-hidden h-[100vh] flex items-center justify-center">
+<section class="relative overflow-hidden min-h-[calc(100vh+160px)] flex items-center justify-center pt-20">
   <!-- Background gradient layer -->
   <div class="absolute inset-0 bg-gradient-to-t from-[#D75E1F] to-[#2F505F] -z-20"></div>
   
@@ -25,6 +34,9 @@ const heroImage = await optimizeImage({
     <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black mix-blend-multiply"></div>
     <Image
       {...heroImage}
+      alt={heroImageData.alt}
+      width={heroImageData.width}
+      height={heroImageData.height}
       class="object-cover w-full h-full"
       loading="eager"
       fetchpriority="high"
@@ -35,13 +47,13 @@ const heroImage = await optimizeImage({
   
   <!-- Floating photo strips layer -->
   <div class="absolute inset-0 -z-5">
-    <div class="hero-container relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="hero-container relative w-full h-[calc(100vh-200px)] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <PhotoStripContainer client:load />
     </div>
   </div>
 
   <!-- Content layer -->
-  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pointer-events-none py-16 sm:py-20">
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pointer-events-none pt-12 sm:pt-16 md:pt-20 pb-64">
     <div class="max-w-3xl md:mx-auto md:text-center">
       <div class="flex justify-center mb-6 sm:mb-8">
         <div class="relative animate-float pointer-events-auto group">
@@ -55,7 +67,7 @@ const heroImage = await optimizeImage({
       <p class="mt-6 sm:mt-8 text-lg sm:text-xl tracking-tight text-gray-200 animate-fade-in">
         Create lasting memories with our premium photo booth experience, complete with optional bartending services.
       </p>
-      <div class="mt-10 sm:mt-12 flex flex-col sm:flex-row justify-center gap-4 sm:gap-x-6 mb-[20vh]">
+      <div class="mt-10 sm:mt-12 flex flex-col sm:flex-row justify-center gap-4 sm:gap-x-6">
         <ButtonLink
           href="#quote"
           variant="default"

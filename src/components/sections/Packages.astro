@@ -1,0 +1,136 @@
+---
+import { Icon } from '@/components/ui/Icon';
+import { ButtonLink } from '@/components/ui/button-link';
+
+const packages = [
+  {
+    name: 'Photo Booth Basic',
+    price: 'From $499',
+    description: 'Perfect for intimate gatherings and small parties',
+    features: [
+      'Professional DSLR camera',
+      '3 hours of service',
+      'Unlimited prints',
+      'Digital gallery',
+      'Props included',
+      'On-site attendant',
+    ],
+    icon: 'Camera',
+    href: '#quote',
+    featured: false,
+  },
+  {
+    name: 'Photo + Soda Bar',
+    price: 'From $799',
+    description: 'Add a refreshing twist to your event',
+    features: [
+      'Everything in Basic',
+      'Custom mocktail menu',
+      'Professional bartender',
+      'Premium mixers',
+      'Glassware included',
+      'Drink garnishes',
+    ],
+    icon: 'Coffee',
+    href: '#quote',
+    featured: true,
+  },
+  {
+    name: 'Premium Package',
+    price: 'From $1,299',
+    description: 'The ultimate photo and beverage experience',
+    features: [
+      'Everything in Soda Bar',
+      'Full bar service',
+      'Custom cocktail menu',
+      'Premium spirits',
+      'Specialty garnishes',
+      'Bar setup & teardown',
+    ],
+    icon: 'Wine',
+    href: '#quote',
+    featured: false,
+  },
+];
+---
+
+<section
+  id="packages"
+  class="relative overflow-hidden bg-white py-16 sm:py-24 px-4 sm:px-6"
+>
+  <div class="mx-auto max-w-7xl">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-[#2F505F] sm:text-4xl">
+        Choose Your Perfect Package
+      </h2>
+      <p class="mt-4 text-lg text-muted-foreground">
+        Select the package that best fits your event needs. All packages include setup, teardown, and professional staff.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-16 grid max-w-lg grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
+      {packages.map((pkg) => {
+        const isFeatured = pkg.featured;
+        return (
+          <div class={`relative flex flex-col rounded-2xl ${isFeatured ? 'border-2 border-[#D75E1F]' : 'border border-gray-200'} bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-lg`}>
+            {isFeatured && (
+              <div class="absolute -top-5 left-1/2 -translate-x-1/2 rounded-full bg-[#D75E1F] px-4 py-1 text-sm font-semibold text-white">
+                Most Popular
+              </div>
+            )}
+            
+            <div class="flex-1">
+              <div class="flex items-center justify-between gap-x-4">
+                <h3 class="text-xl font-semibold leading-8 text-[#2F505F]">
+                  {pkg.name}
+                </h3>
+                <Icon
+                  name={pkg.icon}
+                  className={`h-6 w-6 ${isFeatured ? 'text-[#D75E1F]' : 'text-[#2F505F]'}`}
+                  client:load
+                />
+              </div>
+              <p class="mt-4 text-base text-muted-foreground">
+                {pkg.description}
+              </p>
+              <p class="mt-6 flex items-baseline gap-x-1">
+                <span class="text-4xl font-bold tracking-tight text-[#2F505F]">{pkg.price}</span>
+              </p>
+              <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-muted-foreground">
+                {pkg.features.map((feature) => (
+                  <li class="flex gap-x-3">
+                    <Icon
+                      name="Check"
+                      className={`h-5 w-5 flex-none ${isFeatured ? 'text-[#D75E1F]' : 'text-[#2F505F]'}`}
+                      client:load
+                    />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <ButtonLink
+              href={pkg.href}
+              variant={isFeatured ? 'default' : 'outline'}
+              size="lg"
+              className={`mt-8 w-full ${
+                isFeatured
+                  ? 'bg-[#D75E1F] hover:bg-[#2F505F]'
+                  : 'border-[#2F505F] text-[#2F505F] hover:bg-[#2F505F] hover:text-white'
+              } transition-all duration-300`}
+            >
+              Get a Quote
+            </ButtonLink>
+          </div>
+        );
+      })}
+    </div>
+
+    <div class="mt-16 text-center">
+      <p class="text-base text-muted-foreground">
+        Need a custom package? <a href="#contact" class="font-semibold text-[#D75E1F] hover:text-[#2F505F] transition-colors duration-300">Contact us</a> to discuss your specific requirements.
+      </p>
+    </div>
+  </div>
+</section>

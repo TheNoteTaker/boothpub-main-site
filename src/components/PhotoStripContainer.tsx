@@ -10,49 +10,86 @@ interface Strip {
 
 export function PhotoStripContainer() {
   const [strips, setStrips] = useState<Strip[]>([]);
-  const [nextId, setNextId] = useState(0);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const nextIdRef = useRef(0);
+  const [isMounted, setIsMounted] = useState(false);
   const targetCount = useRef<number>(4);
   const isRemoving = useRef<Set<number>>(new Set());
+  const pendingAdds = useRef<Set<number>>(new Set());
+  const containerRef = useRef<HTMLDivElement>(null);
+  const timeoutRefs = useRef<Set<NodeJS.Timeout>>(new Set());
+
+  const getNextId = useCallback(() => {
+    nextIdRef.current += 1;
+    return nextIdRef.current;
+  }, []);
 
   const calculateStripCount = useCallback(() => {
     if (typeof window === 'undefined') return 4;
     const width = window.innerWidth;
-    if (width < 640) return 1;
-    if (width < 768) return 2;
-    if (width < 1024) return 3;
-    if (width < 1280) return 4;
-    return 6;
+    if (width < 640) return 2;
+    if (width < 768) return 3;
+    if (width < 1024) return 4;
+    return 5;
   }, []);
 
   const createNewStrip = useCallback(() => {
-    if (typeof window === 'undefined') return { id: 0, initialX: 0, initialY: 0, rotation: 0 };
+    if (!containerRef.current) return null;
+    const rect = containerRef.current.getBoundingClientRect();
+    
     return {
-      id: nextId,
-      initialX: Math.random() * (window.innerWidth * 0.95),
-      initialY: Math.random() * (window.innerHeight * 0.6),
+      id: getNextId(),
+      initialX: rect.width * 0.2 + (Math.random() * rect.width * 0.6),
+      initialY: rect.height * 0.2 + (Math.random() * rect.height * 0.4),
       rotation: (Math.random() - 0.5) * 30
     };
-  }, [nextId]);
+  }, [getNextId]);
 
-  // Initialize strips only once after mount
+  const addNewStrip = useCallback(() => {
+    if (typeof window === 'undefined' || !containerRef.current) return;
+    if (pendingAdds.current.size > 0) return;
+    
+    const newStrip = createNewStrip();
+    if (!newStrip) return;
+    
+    pendingAdds.current.add(newStrip.id);
+    
+    const timeout = setTimeout(() => {
+      pendingAdds.current.delete(newStrip.id);
+      setStrips(current => [...current, newStrip]);
+    }, 200);
+    
+    timeoutRefs.current.add(timeout);
+  }, [createNewStrip]);
+
   useEffect(() => {
-    if (isInitialized) return;
+    const initializeStrips = () => {
+      if (!containerRef.current) return;
+      
+      const count = calculateStripCount();
+      const newStrips: Strip[] = [];
+      
+      for (let i = 0; i < count; i++) {
+        const strip = createNewStrip();
+        if (strip) newStrips.push(strip);
+      }
+      
+      setStrips(newStrips);
+      setIsMounted(true);
+    };
+
+    // Small delay to ensure container is mounted
+    const timeout = setTimeout(initializeStrips, 100);
+    timeoutRefs.current.add(timeout);
     
-    targetCount.current = calculateStripCount();
-    const initialStrips = Array.from(
-      { length: targetCount.current },
-      (_, index) => ({
-        id: index,
-        initialX: Math.random() * (window.innerWidth * 0.95),
-        initialY: Math.random() * (window.innerHeight * 0.6),
-        rotation: (Math.random() - 0.5) * 30
-      })
-    );
-    
-    setStrips(initialStrips);
-    setNextId(targetCount.current);
-    setIsInitialized(true);
+    return () => {
+      timeoutRefs.current.forEach(t => clearTimeout(t));
+      timeoutRefs.current.clear();
+    };
+  }, [calculateStripCount, createNewStrip]);
+
+  // Handle window resize
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
 
     const handleResize = () => {
       const newCount = calculateStripCount();
@@ -63,16 +100,11 @@ export function PhotoStripContainer() {
             return current.slice(0, newCount);
           }
           if (current.length < newCount) {
-            const additionalStrips = Array.from(
-              { length: newCount - current.length },
-              (_, index) => ({
-                id: nextId + index,
-                initialX: Math.random() * (window.innerWidth * 0.95),
-                initialY: Math.random() * (window.innerHeight * 0.6),
-                rotation: (Math.random() - 0.5) * 30
-              })
-            );
-            setNextId(nextId + additionalStrips.length);
+            const additionalStrips: Strip[] = [];
+            for (let i = 0; i < newCount - current.length; i++) {
+              const strip = createNewStrip();
+              if (strip) additionalStrips.push(strip);
+            }
             return [...current, ...additionalStrips];
           }
           return current;
@@ -82,46 +114,50 @@ export function PhotoStripContainer() {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [calculateStripCount, isInitialized]);
+  }, [calculateStripCount, createNewStrip]);
 
   const removeStrip = useCallback((stripId: number) => {
-    // Prevent duplicate removals
+    if (!containerRef.current) return;
     if (isRemoving.current.has(stripId)) return;
+    
     isRemoving.current.add(stripId);
-
+    
     setStrips(current => {
-      // Safety check: don't remove if we're at minimum count
-      if (current.length <= 1) {
-        isRemoving.current.delete(stripId);
-        return current;
-      }
-
       const remainingStrips = current.filter(strip => strip.id !== stripId);
       
-      // Create one new strip to replace the removed one
-      const newStrip = {
-        id: nextId,
-        initialX: Math.random() * (window.innerWidth * 0.95),
-        initialY: Math.random() * (window.innerHeight * 0.6),
-        rotation: (Math.random() - 0.5) * 30
-      };
+      if (remainingStrips.length < calculateStripCount()) {
+        addNewStrip();
+      }
       
-      setNextId(prev => prev + 1);
-      
-      // Remove from tracking after successful removal
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         isRemoving.current.delete(stripId);
-      }, 500);
-
-      return [...remainingStrips, newStrip];
+      }, 300);
+      
+      timeoutRefs.current.add(timeout);
+      
+      return remainingStrips;
     });
-  }, [nextId]);
+  }, [addNewStrip, calculateStripCount]);
 
-  // Don't render during SSR
-  if (typeof window === 'undefined') return null;
+  useEffect(() => {
+    return () => {
+      timeoutRefs.current.forEach(t => clearTimeout(t));
+      timeoutRefs.current.clear();
+    };
+  }, []);
+
+  // Show loading state while calculating initial positions
+  if (!isMounted) {
+    return (
+      <div 
+        className="w-full h-full bg-transparent" 
+        aria-label="Loading photo strips..."
+      />
+    );
+  }
 
   return (
-    <>
+    <div ref={containerRef} className="relative w-full h-full">
       {strips.map(strip => (
         <PhotoStrip 
           key={strip.id}
@@ -132,6 +168,6 @@ export function PhotoStripContainer() {
           onRemove={() => removeStrip(strip.id)}
         />
       ))}
-    </>
+    </div>
   );
-} 
+}

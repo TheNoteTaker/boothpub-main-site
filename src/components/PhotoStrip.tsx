@@ -69,17 +69,17 @@ export function PhotoStrip({ index, initialX, initialY, initialRotation, classNa
     setIsRemoving(true);
     setIsFlashing(true);
     
-    // Wait for flash animation
-    await new Promise(resolve => setTimeout(resolve, 150));
-    setIsFlashing(false);
-    
-    // Start removal animation
     await controls.start({
-      scale: [1, 1.2, 0],
-      opacity: [1, 1, 0],
-      transition: { duration: 0.3, ease: "easeOut" }
+      scale: [1, 1.1, 0],
+      opacity: [1, 0.8, 0],
+      transition: { 
+        duration: 0.15,
+        ease: "easeOut",
+        times: [0, 0.3, 1]
+      }
     });
     
+    setIsFlashing(false);
     onRemove?.();
   };
 
@@ -161,11 +161,11 @@ export function PhotoStrip({ index, initialX, initialY, initialRotation, classNa
       whileInView={{ 
         opacity: [0, 1],
         scale: [0.9, 1],
-        transition: { duration: 0.8, ease: "easeOut" }
+        transition: { duration: 0.4, ease: "easeOut" }
       }}
       whileHover={{ 
         scale: 1.15,
-        transition: { duration: 0.4 }
+        transition: { duration: 0.2 }
       }}
       style={{
         position: 'absolute',
@@ -173,7 +173,7 @@ export function PhotoStrip({ index, initialX, initialY, initialRotation, classNa
         pointerEvents: isRemoving ? 'none' : 'auto'
       }}
       onClick={handleClick}
-      className={`cursor-pointer z-10 touch-none select-none ${className || ''}`}
+      className={`cursor-pointer z-10 touch-none select-none will-change-transform ${className || ''}`}
     >
       <div className="w-16 md:w-20 h-48 md:h-56 bg-white rounded-md shadow-lg overflow-hidden border-4 border-white transform-gpu hover:shadow-xl transition-all duration-300 hover:border-[#F9CC9A] relative opacity-70">
         {faces.map((face, idx) => (
@@ -191,7 +191,9 @@ export function PhotoStrip({ index, initialX, initialY, initialRotation, classNa
           </div>
         ))}
         {isFlashing && (
-          <div className="absolute inset-0 bg-white animate-flash pointer-events-none" />
+          <div className="absolute inset-0 bg-white pointer-events-none" style={{
+            animation: 'flash 150ms ease-out forwards'
+          }} />
         )}
       </div>
     </motion.div>

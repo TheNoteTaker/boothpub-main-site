@@ -23,14 +23,17 @@ export default defineConfig({
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
+      config: {
+        limitInputPixels: false,
+      },
     },
     remotePatterns: [{
       protocol: 'https',
       hostname: 'images.unsplash.com',
     }],
-    // Add default image optimization settings
     format: ['webp', 'avif'],
     quality: 80,
+    domains: ['images.unsplash.com'],
   },
   compressHTML: true,
   build: {

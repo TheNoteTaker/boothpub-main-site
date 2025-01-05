@@ -1,75 +1,128 @@
 ---
 import { Icon } from '@/components/ui/Icon';
+import { Image } from 'astro:assets';
+import { optimizeImage } from '@/utils/images';
+
+const benefitsImage = await optimizeImage({
+  src: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3",
+  alt: "Friends enjoying photo booth at an event",
+  width: 800,
+  height: 1067,
+  format: 'webp',
+  quality: 85,
+  params: {
+    w: '800',
+    h: '1067',
+    fit: 'crop',
+    q: '85'
+  }
+});
 
 const benefits = [
   {
-    name: 'Professional Photos & Fun Props',
-    description:
-      "High-quality DSLR cameras and professional lighting ensure perfect shots every time. Plus, a curated collection of props to spark creativity.",
+    name: 'Professional Equipment',
+    description: 'Studio-quality DSLR cameras with professional lighting for perfect shots every time.',
     icon: 'Camera',
   },
   {
-    name: 'Optional Bartending or Soda Bar',
-    description:
-      "Choose between professional bartending service with signature cocktails or a fun, non-alcoholic soda bar experience.",
-    icon: 'Cocktail',
+    name: 'Premium Service',
+    description: 'Expert attendants ensure your guests have an amazing experience from start to finish.',
+    icon: 'Award',
   },
   {
-    name: 'Effortless Setup',
-    description:
-      "We handle everything from setup to teardown. Just point us to the spot, and we will create the perfect photo station.",
-    icon: 'Timer',
+    name: 'Instant Memories',
+    description: 'Take home prints instantly and get all digital copies within 24 hours.',
+    icon: 'Image',
   },
   {
-    name: 'Instant Sharing',
-    description:
-      "Digital delivery of all photos within 24 hours, plus instant printing on-site for immediate memories.",
-    icon: 'Sparkles',
+    name: 'Craft Beverages',
+    description: 'Optional professional bartending service with signature cocktails or mocktails.',
+    icon: 'Wine',
   },
 ];
 ---
 
 <section
   id="benefits"
-  aria-label="Features for running your books"
-  class="relative overflow-hidden bg-background py-12 sm:py-20 px-4 sm:px-6"
+  aria-label="Why choose Booth Pub"
+  class="relative overflow-hidden bg-white py-16 sm:py-24"
 >
-  <div class="mx-auto max-w-7xl">
-    <div class="mx-auto max-w-2xl lg:mx-0">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-[#2F505F] sm:text-4xl">
-        Everything you need for an amazing event
-      </h2>
-      <p class="mt-4 sm:mt-6 text-base sm:text-lg leading-7 text-muted-foreground">
-        We combine the best of photography and hospitality to create unforgettable moments at your event.
-      </p>
-    </div>
-    <div
-      class="mx-auto mt-8 sm:mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none"
-    >
-      <dl
-        class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-4 md:grid-cols-2 animate-fade-in"
-      >
-        {
-          benefits.map((benefit) => (
-            <div class="flex flex-col transform transition-all duration-300 hover:scale-105 hover:shadow-lg p-6 rounded-xl">
-              <dt class="text-base font-semibold leading-7 text-[#2F505F]">
-                <div class="mb-4 sm:mb-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#F9CC9A] transform transition-transform hover:rotate-12">
-                  <Icon
-                    name={benefit.icon}
-                    client:load
-                    className="h-6 w-6 text-[#D75E1F]"
-                    aria-hidden="true"
-                  />
-                </div>
-                {benefit.name}
-              </dt>
-              <dd class="mt-1 flex flex-auto flex-col text-sm sm:text-base leading-7 text-muted-foreground">
-                <p class="flex-auto">{benefit.description}</p>
-              </dd>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:gap-x-16 xl:gap-x-24 items-center">
+      <!-- Left content -->
+      <div class="relative z-10">
+        <div class="relative">
+          <div class="inline-flex mb-4 items-center rounded-full bg-[#F9CC9A]/10 px-4 py-1">
+            <Icon
+              name="Sparkles"
+              className="mr-2 h-4 w-4 text-[#D75E1F]"
+              client:load
+            />
+            <span class="text-sm font-medium text-[#D75E1F]">Why Choose Us</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#2F505F] sm:text-5xl">
+            Elevate Your Events with Premium Photo Experiences
+          </h2>
+          <p class="mt-4 text-lg text-muted-foreground">
+            We combine professional photography with exceptional service to create unforgettable moments at your events.
+          </p>
+        </div>
+
+        <div class="mt-10 space-y-8">
+          {benefits.map((benefit) => (
+            <div class="group relative flex gap-6 items-start">
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#F9CC9A] group-hover:bg-[#D75E1F] transition-colors duration-300">
+                <Icon
+                  name={benefit.icon}
+                  className="h-6 w-6 text-[#D75E1F] group-hover:text-white transition-colors duration-300"
+                  client:load
+                />
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-[#2F505F] group-hover:text-[#D75E1F] transition-colors duration-300">
+                  {benefit.name}
+                </h3>
+                <p class="mt-2 text-base text-muted-foreground">
+                  {benefit.description}
+                </p>
+              </div>
             </div>
-          ))
-        }
-      </dl>
+          ))}
+        </div>
+
+        <div class="mt-12">
+          <a
+            href="#packages"
+            class="inline-flex items-center px-6 py-3 text-base font-medium rounded-lg text-white bg-[#D75E1F] hover:bg-[#2F505F] transition-all duration-300 group"
+          >
+            View Our Packages
+            <Icon
+              name="ArrowRight"
+              className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300"
+              client:load
+            />
+          </a>
+        </div>
+      </div>
+
+      <!-- Right image -->
+      <div class="relative lg:mt-0">
+        <div class="relative aspect-[3/4] overflow-hidden rounded-2xl">
+          <Image
+            {...benefitsImage}
+            alt="Friends enjoying photo booth at an event"
+            class="object-cover w-full h-full"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/10"></div>
+        </div>
+        
+        <!-- Decorative elements -->
+        <div class="absolute -top-4 -right-4 -bottom-4 -left-4 rounded-2xl bg-[#2F505F]/5 -z-10"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-20">
+          <div class="aspect-square w-96 rounded-full bg-[#D75E1F]/10 blur-3xl"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
