@@ -20,7 +20,7 @@ const heroImageData = {
 const { images, sizes } = await createResponsiveImage(heroImageData);
 ---
 
-<section class="relative overflow-hidden min-h-[calc(100vh+160px)] flex items-center justify-center pt-20">
+<section class="relative overflow-hidden min-h-[calc(100vh+160px)] flex items-start justify-center pt-32">
   <!-- Background gradient layer -->
   <div class="absolute inset-0 bg-gradient-to-t from-[#D75E1F] to-[#2F505F] -z-20"></div>
   
@@ -43,14 +43,14 @@ const { images, sizes } = await createResponsiveImage(heroImageData);
   </div>
   
   <!-- Floating photo strips layer -->
-  <div class="absolute inset-0 -z-5">
-    <div class="hero-container relative w-full h-[calc(100vh-200px)] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="absolute inset-0 z-[5]">
+    <div class="hero-container relative w-full h-[calc(100vh-160px)] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <PhotoStripContainer client:load />
     </div>
   </div>
 
   <!-- Content layer -->
-  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pointer-events-none pt-12 sm:pt-16 md:pt-20 pb-64">
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pointer-events-none">
     <div class="max-w-3xl md:mx-auto md:text-center">
       <div class="flex justify-center mb-6 sm:mb-8">
         <div class="relative animate-float pointer-events-auto group">
@@ -86,7 +86,7 @@ const { images, sizes } = await createResponsiveImage(heroImageData);
   </div>
   
   <!-- Bottom film strip layer -->
-  <div class="absolute bottom-0 left-0 right-0 z-20">
+  <div class="absolute bottom-16 left-0 right-0 z-20">
     <FilmStrip client:load />
   </div>
 </section>

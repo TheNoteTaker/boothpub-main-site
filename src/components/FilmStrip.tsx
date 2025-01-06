@@ -37,34 +37,41 @@ function OptimizedImage({
   );
 }
 
-const images: ImageData[] = [
+const BRAND_COLORS = {
+  navy: '#2F505F',
+  orange: '#D75E1F',
+  cream: '#F9CC9A'
+};
+
+// These will be replaced with real photos once available
+const temporaryPhotos: ImageData[] = [
   {
-    src: 'https://source.unsplash.com/360x480/?photobooth,party&sig=1',
-    alt: 'Temporary placeholder image 1',
+    src: 'https://picsum.photos/seed/boothpub1/360/480',
+    alt: 'Happy guests enjoying our photo booth at event 1',
     width: 360,
     height: 480
   },
   {
-    src: 'https://source.unsplash.com/360x480/?photobooth,event&sig=2',
-    alt: 'Temporary placeholder image 2',
+    src: 'https://picsum.photos/seed/boothpub2/360/480',
+    alt: 'Friends taking photos in our booth at event 2',
     width: 360,
     height: 480
   },
   {
-    src: 'https://source.unsplash.com/360x480/?party,celebration&sig=3',
-    alt: 'Temporary placeholder image 3',
+    src: 'https://picsum.photos/seed/boothpub3/360/480',
+    alt: 'Group celebration at photo booth event 3',
     width: 360,
     height: 480
   },
   {
-    src: 'https://source.unsplash.com/360x480/?wedding,celebration&sig=4',
-    alt: 'Temporary placeholder image 4',
+    src: 'https://picsum.photos/seed/boothpub4/360/480',
+    alt: 'Guests having fun at photo booth event 4',
     width: 360,
     height: 480
   },
   {
-    src: 'https://source.unsplash.com/360x480/?event,party&sig=5',
-    alt: 'Temporary placeholder image 5',
+    src: 'https://picsum.photos/seed/boothpub5/360/480',
+    alt: 'Party atmosphere at photo booth event 5',
     width: 360,
     height: 480
   }
@@ -84,9 +91,8 @@ export function FilmStrip() {
           {/* Scrolling content container */}
           <div className="h-full flex items-center overflow-hidden">
             <div className="flex animate-scroll whitespace-nowrap h-[98%] gap-0.5">
-            {[...images, ...images, ...images].map((image, index) => {
-              // Create a unique key by combining the image index and its position in the repeated sequence
-              const uniqueKey = `${index % images.length}-${Math.floor(index / images.length)}`;
+            {[...temporaryPhotos, ...temporaryPhotos, ...temporaryPhotos].map((photo, index) => {
+              const uniqueKey = `${index % temporaryPhotos.length}-${Math.floor(index / temporaryPhotos.length)}`;
               return (
                 <div
                   key={uniqueKey}
@@ -112,11 +118,11 @@ export function FilmStrip() {
                       </div>
                       
                       {/* Photo area - with proportional height */}
-                      <div className="h-[88%] relative bg-black/10">
+                      <div className="h-[88%] relative">
                         <div className="absolute inset-0 p-[1%]">
-                          <div className="relative w-full h-full overflow-hidden">
+                          <div className="relative w-full h-full overflow-hidden rounded-sm">
                             <OptimizedImage
-                              {...image}
+                              {...photo}
                               className="object-cover w-full h-full brightness-90"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-50" />

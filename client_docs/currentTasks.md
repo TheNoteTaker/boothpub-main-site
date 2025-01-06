@@ -43,10 +43,11 @@ Components: src/components/sections/*.astro
 ⚙️ **FilmStrip Component**
 
 - ✅ Initial component implementation
-- ⚙️ Temporary placeholder images
-- ⚙️ Image optimization handling
-- ⚠️ Add final event photos
-Components: src/components/FilmStrip.tsx
+- ✅ Fixed z-index for floating strips
+- ✅ Switched to brand color blocks
+- ✅ Added smooth animation
+- ⚠️ Add final event photos (when ready)
+Components: src/components/FilmStrip.tsx, src/components/sections/Hero.astro
 
 ## Recently Completed
 
