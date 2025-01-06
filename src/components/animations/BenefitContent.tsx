@@ -10,33 +10,57 @@ interface BenefitContentProps {
 
 export function BenefitContent({ name, description, icon }: BenefitContentProps) {
   const contentRef = useRef<HTMLDivElement>(null);
+  
   const { scrollYProgress } = useScroll({
     target: contentRef,
-    offset: ['start end', 'end start']
+    offset: ["start end", "end start"]
   });
 
-  const x = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [100, 0, 0, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const x = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.5, 0.75, 1],
+    [100, 100, 0, -100, -100]
+  );
+
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.5, 0.75, 1],
+    [0, 0, 1, 0, 0]
+  );
 
   return (
     <motion.div
       ref={contentRef}
       style={{ x, opacity }}
-      className="flex items-start gap-6"
+      className="flex flex-col gap-6 max-w-xl"
     >
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#F9CC9A] group-hover:bg-[#D75E1F] transition-colors duration-300">
+      <motion.div 
+        className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#F9CC9A]"
+        whileInView={{ scale: [0.8, 1], rotate: [-10, 0] }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <Icon
           name={icon}
-          className="h-6 w-6 text-[#D75E1F] group-hover:text-white transition-colors duration-300"
+          className="h-8 w-8 text-[#D75E1F]"
         />
-      </div>
+      </motion.div>
       <div>
-        <h3 className="text-2xl font-semibold text-[#2F505F] group-hover:text-[#D75E1F] transition-colors duration-300">
+        <motion.h3 
+          className="text-3xl font-semibold text-[#2F505F]"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           {name}
-        </h3>
-        <p className="mt-4 text-lg text-muted-foreground">
+        </motion.h3>
+        <motion.p 
+          className="mt-4 text-xl text-muted-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
           {description}
-        </p>
+        </motion.p>
       </div>
     </motion.div>
   );

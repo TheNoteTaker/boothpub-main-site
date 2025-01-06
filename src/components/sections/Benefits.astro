@@ -63,61 +63,27 @@ const benefitImages = await Promise.all(
 );
 ---
 
-<section id="benefits" class="relative bg-white overflow-hidden">
-  <!-- Header -->
-  <motion.div
-    client:load
-    className="sticky top-0 left-0 right-0 z-40 h-[60vh] flex items-center justify-center bg-white/95 backdrop-blur-sm"
-    initial={{ opacity: 0, y: -30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: false, margin: "-10% 0px" }}
-    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-  >
+<section id="benefits" class="relative bg-white">
+  <ScrollSection client:load index={0}>
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-      <motion.div
-        client:load
-        className="inline-flex mb-4 items-center rounded-full bg-[#F9CC9A]/10 px-4 py-1"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.8, delay: 0.1 }}
-      >
-        <Icon
-          name="Sparkles"
-          className="mr-2 h-4 w-4 text-[#D75E1F]"
-          client:load
-        />
+      <div class="inline-flex mb-4 items-center rounded-full bg-[#F9CC9A]/10 px-4 py-1">
+        <Icon name="Sparkles" className="mr-2 h-4 w-4 text-[#D75E1F]" client:load />
         <span class="text-sm font-medium text-[#D75E1F]">Why Choose Us</span>
-      </motion.div>
-      <motion.h2
-        client:load
-        className="text-3xl sm:text-4xl font-bold tracking-tight text-[#2F505F] sm:text-5xl"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#2F505F] sm:text-5xl">
         Elevate Your Events with Premium Photo Experiences
-      </motion.h2>
-      <motion.p
-        client:load
-        className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-      >
+      </h2>
+      <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
         We combine professional photography with exceptional service to create unforgettable moments at your events.
-      </motion.p>
+      </p>
     </div>
-  </motion.div>
+  </ScrollSection>
 
-  <!-- Scrollable content -->
-  <div class="relative">
+  <div class="relative bg-white">
     {benefits.map((benefit, index) => (
-      <ScrollSection client:load index={index}>
+      <ScrollSection client:load index={index + 1}>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-8 items-center">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-24 gap-y-12 items-center">
             <BenefitContent
               client:load
               name={benefit.name}
