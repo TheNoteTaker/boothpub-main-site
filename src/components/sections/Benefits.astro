@@ -1,130 +1,141 @@
 ---
 import { Icon } from '@/components/ui/Icon';
-import { Image } from 'astro:assets';
-import { createResponsiveImage } from '@/utils/images';
-
-const benefitsImageData = {
-  src: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3",
-  alt: "Friends enjoying photo booth at an event",
-  width: 800,
-  height: 1067,
-  format: 'webp' as const,
-  quality: 85,
-  sizes: "(min-width: 1024px) 800px, (min-width: 640px) 600px, 100vw",
-  breakpoints: [400, 600, 800]
-};
-
-const { images, sizes } = await createResponsiveImage(benefitsImageData);
+import { createResponsiveImage, type ResponsiveImageOptions } from '@/utils/images';
+import { ScrollSection } from '@/components/animations/ScrollSection';
+import { BenefitContent } from '@/components/animations/BenefitContent';
+import BenefitImageWrapper from '@/components/animations/BenefitImageWrapper.astro';
+import { motion } from 'framer-motion';
 
 const benefits = [
   {
     name: 'Professional Equipment',
     description: 'Studio-quality DSLR cameras with professional lighting for perfect shots every time.',
     icon: 'Camera',
+    image: {
+      src: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e",
+      alt: "Professional photo booth equipment setup",
+    }
   },
   {
-    name: 'Premium Service',
-    description: 'Expert attendants ensure your guests have an amazing experience from start to finish.',
+    name: 'Expert Service',
+    description: 'Our trained staff provides exceptional service, making every event memorable.',
     icon: 'Award',
+    image: {
+      src: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf",
+      alt: "Professional photo booth attendant helping guests",
+    }
+  },
+  {
+    name: 'Premium Experience',
+    description: 'Combining photography and bartending for a unique entertainment experience.',
+    icon: 'Star',
+    image: {
+      src: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7",
+      alt: "Guests enjoying premium photo booth experience",
+    }
   },
   {
     name: 'Instant Memories',
-    description: 'Take home prints instantly and get all digital copies within 24 hours.',
+    description: 'Take home high-quality prints instantly and access digital copies within 24 hours.',
     icon: 'Image',
-  },
-  {
-    name: 'Craft Beverages',
-    description: 'Optional professional bartending service with signature cocktails or mocktails.',
-    icon: 'Wine',
-  },
+    image: {
+      src: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3",
+      alt: "Instant photo prints from our booth",
+    }
+  }
 ];
+
+const imageOptions: ResponsiveImageOptions = {
+  width: 800,
+  height: 1067,
+  format: 'webp',
+  quality: 85,
+  sizes: "(min-width: 1024px) 800px, (min-width: 640px) 600px, 100vw",
+  breakpoints: [400, 600, 800]
+};
+
+const benefitImages = await Promise.all(
+  benefits.map(benefit => createResponsiveImage({
+    ...imageOptions,
+    src: benefit.image.src,
+    alt: benefit.image.alt
+  }))
+);
 ---
 
-<section
-  id="benefits"
-  aria-label="Why choose Booth Pub"
-  class="relative overflow-hidden bg-white py-16 sm:py-24"
->
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 gap-y-8 lg:grid-cols-2 lg:gap-x-16 xl:gap-x-24 items-center">
-      <!-- Left content -->
-      <div class="relative z-10">
-        <div class="relative">
-          <div class="inline-flex mb-4 items-center rounded-full bg-[#F9CC9A]/10 px-4 py-1">
-            <Icon
-              name="Sparkles"
-              className="mr-2 h-4 w-4 text-[#D75E1F]"
-              client:load
-            />
-            <span class="text-sm font-medium text-[#D75E1F]">Why Choose Us</span>
-          </div>
-          <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#2F505F] sm:text-5xl">
-            Elevate Your Events with Premium Photo Experiences
-          </h2>
-          <p class="mt-4 text-lg text-muted-foreground">
-            We combine professional photography with exceptional service to create unforgettable moments at your events.
-          </p>
-        </div>
-
-        <div class="mt-10 space-y-8">
-          {benefits.map((benefit) => (
-            <div class="group relative flex gap-6 items-start">
-              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#F9CC9A] group-hover:bg-[#D75E1F] transition-colors duration-300">
-                <Icon
-                  name={benefit.icon}
-                  className="h-6 w-6 text-[#D75E1F] group-hover:text-white transition-colors duration-300"
-                  client:load
-                />
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-[#2F505F] group-hover:text-[#D75E1F] transition-colors duration-300">
-                  {benefit.name}
-                </h3>
-                <p class="mt-2 text-base text-muted-foreground">
-                  {benefit.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div class="mt-12">
-          <a
-            href="#packages"
-            class="inline-flex items-center px-6 py-3 text-base font-medium rounded-lg text-white bg-[#D75E1F] hover:bg-[#2F505F] transition-all duration-300 group"
-          >
-            View Our Packages
-            <Icon
-              name="ArrowRight"
-              className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300"
-              client:load
-            />
-          </a>
-        </div>
-      </div>
-
-      <!-- Right image -->
-      <div class="relative lg:mt-0">
-        <div class="relative aspect-[3/4] overflow-hidden rounded-2xl">
-          <Image
-            src={images[images.length - 1].src}
-            alt={benefitsImageData.alt}
-            width={benefitsImageData.width}
-            height={benefitsImageData.height}
-            class="object-cover w-full h-full"
-            loading="lazy"
-            srcset={images.map(img => `${img.src} ${img.attributes.width}w`).join(', ')}
-            sizes={sizes}
-          />
-          <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/10"></div>
-        </div>
-        
-        <!-- Decorative elements -->
-        <div class="absolute -top-4 -right-4 -bottom-4 -left-4 rounded-2xl bg-[#2F505F]/5 -z-10"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-20">
-          <div class="aspect-square w-96 rounded-full bg-[#D75E1F]/10 blur-3xl"></div>
-        </div>
-      </div>
+<section id="benefits" class="relative bg-white overflow-hidden">
+  <!-- Header -->
+  <motion.div
+    client:load
+    className="sticky top-0 left-0 right-0 z-40 h-[60vh] flex items-center justify-center bg-white/95 backdrop-blur-sm"
+    initial={{ opacity: 0, y: -30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: false, margin: "-10% 0px" }}
+    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+  >
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <motion.div
+        client:load
+        className="inline-flex mb-4 items-center rounded-full bg-[#F9CC9A]/10 px-4 py-1"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.8, delay: 0.1 }}
+      >
+        <Icon
+          name="Sparkles"
+          className="mr-2 h-4 w-4 text-[#D75E1F]"
+          client:load
+        />
+        <span class="text-sm font-medium text-[#D75E1F]">Why Choose Us</span>
+      </motion.div>
+      <motion.h2
+        client:load
+        className="text-3xl sm:text-4xl font-bold tracking-tight text-[#2F505F] sm:text-5xl"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        Elevate Your Events with Premium Photo Experiences
+      </motion.h2>
+      <motion.p
+        client:load
+        className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
+        We combine professional photography with exceptional service to create unforgettable moments at your events.
+      </motion.p>
     </div>
+  </motion.div>
+
+  <!-- Scrollable content -->
+  <div class="relative">
+    {benefits.map((benefit, index) => (
+      <ScrollSection client:load index={index}>
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-8 items-center">
+            <BenefitContent
+              client:load
+              name={benefit.name}
+              description={benefit.description}
+              icon={benefit.icon}
+            />
+            <BenefitImageWrapper
+              src={benefitImages[index].images[benefitImages[index].images.length - 1].src}
+              alt={benefit.image.alt}
+              width={800}
+              height={1067}
+              loading={index === 0 ? "eager" : "lazy"}
+              srcset={benefitImages[index].images.map(img => `${img.src} ${img.attributes.width}w`).join(', ')}
+              sizes={benefitImages[index].sizes}
+            />
+          </div>
+        </div>
+      </ScrollSection>
+    ))}
   </div>
 </section>

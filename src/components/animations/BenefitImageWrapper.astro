@@ -1,0 +1,29 @@
+---
+import { Image } from 'astro:assets';
+import { BenefitImageAnimation } from './BenefitImageAnimation';
+
+interface Props {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  srcset: string;
+  sizes: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const { src, alt, width, height, srcset, sizes, loading = 'lazy' } = Astro.props;
+---
+
+<BenefitImageAnimation client:load>
+  <Image
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    class="object-cover w-full h-full"
+    loading={loading}
+    srcset={srcset}
+    sizes={sizes}
+  />
+</BenefitImageAnimation>
