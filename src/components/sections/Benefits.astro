@@ -12,6 +12,10 @@ const benefits = [
     name: 'Professional Equipment',
     description: 'Studio-quality DSLR cameras with professional lighting for perfect shots every time.',
     icon: 'Camera',
+    cta: {
+      text: 'View Our Equipment',
+      href: '#packages'
+    },
     image: {
       src: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e",
       alt: "Professional photo booth equipment setup",
@@ -21,6 +25,10 @@ const benefits = [
     name: 'Expert Service',
     description: 'Our trained staff provides exceptional service, making every event memorable.',
     icon: 'Award',
+    cta: {
+      text: 'Meet Our Team',
+      href: '#contact'
+    },
     image: {
       src: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf",
       alt: "Professional photo booth attendant helping guests",
@@ -30,6 +38,10 @@ const benefits = [
     name: 'Premium Experience',
     description: 'Combining photography and bartending for a unique entertainment experience.',
     icon: 'Star',
+    cta: {
+      text: 'Explore Packages',
+      href: '#packages'
+    },
     image: {
       src: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7",
       alt: "Guests enjoying premium photo booth experience",
@@ -39,6 +51,10 @@ const benefits = [
     name: 'Instant Memories',
     description: 'Take home high-quality prints instantly and access digital copies within 24 hours.',
     icon: 'Image',
+    cta: {
+      text: 'See Gallery',
+      href: '#gallery'
+    },
     image: {
       src: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3",
       alt: "Instant photo prints from our booth",
@@ -47,11 +63,11 @@ const benefits = [
 ];
 
 const imageOptions: ResponsiveImageOptions = {
-  width: 800,
-  height: 1067,
+  width: 600,
+  height: 800,
   format: 'webp',
   quality: 85,
-  sizes: "(min-width: 1024px) 800px, (min-width: 640px) 600px, 100vw",
+  sizes: "(min-width: 1024px) 600px, (min-width: 640px) 450px, 100vw",
   breakpoints: [400, 600, 800]
 };
 
@@ -91,6 +107,7 @@ const benefitImages = await Promise.all(
               name={benefit.name}
               description={benefit.description}
               icon={benefit.icon}
+              cta={benefit.cta}
             />
             <BenefitImageWrapper
               src={benefitImages[index].images[benefitImages[index].images.length - 1].src}

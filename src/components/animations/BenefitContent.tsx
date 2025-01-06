@@ -7,9 +7,13 @@ interface BenefitContentProps {
   name: string;
   description: string;
   icon: keyof typeof LucideIcons;
+  cta: {
+    text: string;
+    href: string;
+  };
 }
 
-export function BenefitContent({ name, description, icon }: BenefitContentProps) {
+export function BenefitContent({ name, description, icon, cta }: BenefitContentProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -65,6 +69,23 @@ export function BenefitContent({ name, description, icon }: BenefitContentProps)
         >
           {description}
         </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="mt-6"
+        >
+          <a
+            href={cta.href}
+            className="inline-flex items-center text-[#D75E1F] hover:text-[#2F505F] transition-colors duration-300 group"
+          >
+            {cta.text}
+            <Icon
+              name="ArrowRight"
+              className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300"
+            />
+          </a>
+        </motion.div>
       </div>
     </motion.div>
   );
