@@ -1,90 +1,153 @@
 # Development Workflow
 
-Last Updated: 2024-01-03
+Last Updated: 2024-01-05
 
 ## Development Process
 
-### Local Development
+### Component Development
 
-1. Use `npm run dev` for local development
-2. Enable Supabase local development with `npx supabase start`
-3. Test changes in multiple browsers and devices
+1. **New Components**
+   - Start with Astro by default
+   - Only use React for complex interactions
+   - Document hydration requirements
+   - Include performance budget
+
+2. **Component Updates**
+   - Evaluate current implementation
+   - Consider Astro conversion
+   - Measure performance impact
+   - Update documentation
+
+### Performance Workflow
+
+1. **Monitoring**
+   - Track Core Web Vitals
+   - Measure bundle sizes
+   - Monitor hydration
+   - Check build times
+
+2. **Optimization**
+   - Regular performance audits
+   - Component-level profiling
+   - Bundle analysis
+   - Image optimization
+
+## Testing Patterns
+
+### Component Testing
+
+1. **Static Components**
+   - Visual regression
+   - Accessibility checks
+   - Performance metrics
+   - Build output validation
+
+2. **Interactive Components**
+   - Hydration testing
+   - Event handling
+   - Error boundaries
+   - Loading states
+
+### Performance Testing
+
+1. **Build-time Metrics**
+   - Bundle size analysis
+   - Image optimization
+   - CSS optimization
+   - Type checking
+
+2. **Runtime Metrics**
+   - Core Web Vitals
+   - Hydration timing
+   - Memory usage
+   - Network usage
+
+## Release Process
+
+### Pre-release Checklist
+
+1. **Performance**
+   - Core Web Vitals check
+   - Bundle size verification
+   - Image optimization
+   - CSS optimization
+
+2. **Quality**
+   - TypeScript checks
+   - Lint validation
+   - Accessibility audit
+   - Visual regression
+
+### Deployment Steps
+
+1. **Build Process**
+   - Static generation
+   - Asset optimization
+   - Cache invalidation
+   - Performance validation
+
+2. **Post-deployment**
+   - Monitoring setup
+   - Performance verification
+   - Error tracking
+   - Analytics validation
+
+## Project Standards
 
 ### Code Standards
 
-- TypeScript for type safety
-- ESLint + Prettier for code formatting
-- Component-first architecture
-- Functional programming patterns
-- Clear documentation and comments
+1. **Component Architecture**
+   - Astro-first approach
+   - Clear hydration boundaries
+   - Minimal JavaScript
+   - Type safety
 
-### Testing Strategy
+2. **Performance Standards**
+   - Bundle size limits
+   - Image optimization rules
+   - CSS optimization
+   - Loading strategies
 
-1. **Component Testing**
-   - Unit tests for utility functions
-   - Component testing with React Testing Library
-   - Visual regression testing (future)
+### Documentation Standards
 
-2. **Integration Testing**
-   - End-to-end testing with Playwright
-   - API integration testing
-   - Database operation testing
+1. **Component Documentation**
+   - Usage examples
+   - Performance considerations
+   - Hydration requirements
+   - Props interface
 
-### Release Process
+2. **Performance Documentation**
+   - Metrics baseline
+   - Optimization decisions
+   - Bundle analysis
+   - Improvement tracking
 
-1. **Pre-Release**
-   - Code review
-   - Test suite passing
-   - Performance benchmarking
-   - Accessibility checks
+## Development Environment
 
-2. **Deployment**
-   - Automated deployment through CI/CD
-   - Database migrations
-   - Static asset optimization
-   - CDN cache invalidation
+### Local Setup
 
-3. **Post-Release**
-   - Monitoring
+1. **Required Tools**
+   - Node.js
+   - pnpm
+   - VS Code
+   - Chrome DevTools
+
+2. **Extensions**
+   - Astro
+   - TypeScript
+   - Tailwind CSS
+   - ESLint
+
+### Performance Tools
+
+1. **Development**
+   - Lighthouse
+   - Bundle analyzer
+   - Chrome DevTools
+   - Performance monitor
+
+2. **Production**
+   - Core Web Vitals
+   - Real User Monitoring
    - Error tracking
-   - Performance metrics
-   - User feedback collection
-
-## Project-Specific Standards
-
-### Component Structure
-
-```typescript
-// Component naming: PascalCase
-// File location: src/components/[category]/[ComponentName].tsx
-import type { ComponentProps } from 'react';
-
-interface Props extends ComponentProps<'div'> {
-  // Props definition
-}
-
-export function ComponentName({ ...props }: Props) {
-  // Implementation
-}
-```
-
-### Styling Conventions
-
-- Use Tailwind utility classes
-- Custom CSS in globals.css
-- Component-specific styles in CSS modules
-- Follow BEM naming for custom CSS
-
-### State Management
-
-- Props drilling limit: 2 levels
-- Context for global state
-- Local state for UI components
-- Supabase for persistent data
-
-### Documentation Requirements
-
-- JSDoc for utilities and hooks
-- README for each major feature
-- Inline comments for complex logic
-- Type definitions for all interfaces
+   - Analytics

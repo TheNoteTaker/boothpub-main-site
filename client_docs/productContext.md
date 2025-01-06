@@ -1,65 +1,66 @@
 # Product Context
 
-Last Updated: 2024-01-03
+Last Updated: 2024-01-05
 
 ## Why We're Building This
 
-Booth Pub aims to revolutionize event experiences by combining professional photo booth services with bartending, creating a unique value proposition in the event services market. The platform serves as both a marketing tool and a booking management system.
+Booth Pub aims to revolutionize event photography by combining professional photo booth services with bartending, creating a unique value proposition in the events industry. Our platform serves as both a marketing tool and a booking system for this innovative service.
 
 ## Core User Problems/Solutions
 
 ### Problems
 
-- Event planners struggle to find reliable, premium photo booth services
-- Coordinating multiple vendors (photographers, bartenders) is complex
-- Lack of transparency in pricing and availability
-- Difficulty in visualizing service quality before booking
+1. Event planners struggle to find unique entertainment options
+2. Coordinating multiple vendors (photographers, bartenders) is complex
+3. Lack of transparency in photo booth pricing and packages
+4. Difficulty in visualizing the service quality beforehand
 
 ### Solutions
 
-- All-in-one photo booth and bartending service
-- Streamlined booking process through Supabase
-- Transparent pricing and package information
-- High-quality portfolio showcase
-- Real-time availability checking
+1. Combined photo booth and bartending service
+2. Streamlined booking process through Supabase
+3. Clear, upfront pricing and package information
+4. High-quality image gallery and testimonials
 
 ## Key Workflows
 
 1. **Discovery Flow**
-   - Landing page showcase
-   - Service package browsing
-   - Portfolio gallery viewing
+   - Landing page showcases service quality
+   - Photo gallery demonstrates past events
+   - Testimonials build trust
+   - Package comparison aids decision-making
 
 2. **Booking Flow**
    - Package selection
    - Date availability check
-   - Quote request submission
+   - Contact form submission
    - Booking confirmation
 
 3. **Admin Flow**
    - Booking management
-   - Calendar synchronization
-   - Quote generation
+   - Calendar overview
    - Client communication
+   - Package customization
 
-## Product Direction and Priorities
+## Product Direction
 
-### Immediate Priorities
+### Short-term Priorities
 
-1. Launch MVP with core booking functionality
-2. Implement responsive design for all devices
-3. Optimize SEO for local market visibility
+1. Optimize site performance using Astro's capabilities
+2. Implement booking system with Supabase
+3. Add image optimization and lazy loading
+4. Improve form validation and error handling
 
-### Future Enhancements
+### Long-term Vision
 
-1. Online payment processing
-2. Client portal for booking management
-3. Integration with calendar systems
-4. Automated quote generation
-5. Review/testimonial system
+1. Expand to multiple locations
+2. Add real-time availability calendar
+3. Implement online payment processing
+4. Develop client portal for event planning
 
-### Target Market Focus
+## Success Metrics
 
-- Primary: Wedding couples and corporate event planners
-- Secondary: Private party hosts and special event organizers
-- Geographic Focus: Local market with expansion potential
+1. Page load time < 1.5s
+2. Booking conversion rate > 5%
+3. Form completion rate > 80%
+4. User engagement time > 2 minutes

@@ -1,89 +1,149 @@
 # Operational Context
 
-Last Updated: 2024-01-03
+Last Updated: 2024-01-05
 
 ## System Operation
 
 ### Error Handling Patterns
 
 1. **Client-Side Errors**
-   - Form validation errors
-   - Network request failures
-   - Authentication errors
-   - UI state errors
+   - Form validation with Zod
+   - Network request handling
+   - Image loading fallbacks
+   - Hydration errors
 
-2. **Server-Side Errors**
-   - Database operation failures
-   - Authentication failures
-   - Rate limiting
-   - Service unavailability
+2. **Build-Time Errors**
+   - Astro compilation issues
+   - Image optimization failures
+   - Type checking errors
+   - Integration conflicts
 
-3. **Error Recovery**
-   - Automatic retry for transient failures
-   - Graceful degradation
-   - User-friendly error messages
-   - Error boundary implementation
+3. **Runtime Errors**
+   - Component hydration failures
+   - Form submission errors
+   - Image loading issues
+   - Performance degradation
+
+### Error Recovery
+
+1. **Graceful Degradation**
+   - Progressive enhancement
+   - Fallback content
+   - Error boundaries
+   - Default values
+
+2. **User Feedback**
+   - Clear error messages
+   - Loading states
+   - Form validation feedback
+   - Progress indicators
 
 ## Infrastructure Details
 
-### Hosting
+### Build Pipeline
 
-- Static assets on CDN
-- Supabase for backend services
-- Database hosting through Supabase
-- Media storage in Supabase Storage
+1. **Astro Build Process**
+   - Static site generation
+   - Image optimization
+   - CSS optimization
+   - JavaScript bundling
 
-### Security
+2. **Asset Pipeline**
+   - Image processing with @astrojs/image
+   - Font optimization
+   - Icon bundling
+   - Static file handling
 
-- HTTPS everywhere
-- CSP headers
-- Rate limiting
-- SQL injection prevention
-- XSS protection
-- CORS configuration
+### Deployment
 
-### Monitoring
+1. **Static Hosting**
+   - CDN distribution
+   - Edge caching
+   - Asset optimization
+   - Performance monitoring
 
-- Error tracking
-- Performance monitoring
-- User analytics
-- Server health checks
-- Database performance
+2. **Monitoring**
+   - Core Web Vitals
+   - Error tracking
+   - Performance metrics
+   - User analytics
 
 ## Performance Requirements
 
-### Loading Performance
+### Page Performance
 
-- First Contentful Paint: < 1.5s
-- Time to Interactive: < 2.5s
-- First Input Delay: < 100ms
-- Cumulative Layout Shift: < 0.1
+1. **Core Web Vitals**
+   - LCP < 2.5s
+   - FID < 100ms
+   - CLS < 0.1
+   - TBT < 300ms
 
-### Runtime Performance
+2. **Additional Metrics**
+   - TTFB < 200ms
+   - FCP < 1s
+   - Speed Index < 3s
+   - JavaScript size < 100KB initial
 
-- Smooth animations (60fps)
-- Responsive UI interactions
-- Efficient memory usage
-- Optimized asset loading
+### Resource Optimization
 
-### API Performance
+1. **Images**
+   - WebP format primary
+   - Responsive sizes
+   - Lazy loading
+   - Proper dimensions
 
-- API response time: < 200ms
-- Database query time: < 100ms
-- Cache hit ratio: > 80%
-- Connection pooling optimization
+2. **JavaScript**
+   - Minimal initial JS
+   - Selective hydration
+   - Code splitting
+   - Tree shaking
 
-## Scalability Considerations
+3. **CSS**
+   - Critical CSS inline
+   - Tailwind optimization
+   - Unused CSS removal
+   - Minimal animations
 
-- Horizontal scaling capability
-- Cache strategies
-- Database indexing
-- Asset optimization
-- Load balancing (future)
+### Caching Strategy
 
-## Backup and Recovery
+1. **Static Assets**
+   - Long-term caching
+   - Cache invalidation
+   - Version hashing
+   - CDN caching
 
-- Daily database backups
-- Point-in-time recovery
-- Asset redundancy
-- Disaster recovery plan
+2. **API Responses**
+   - Build-time caching
+   - Static generation
+   - Incremental builds
+   - Cache revalidation
+
+## Monitoring and Alerts
+
+### Performance Monitoring
+
+1. **Real User Metrics**
+   - Core Web Vitals
+   - User interactions
+   - Error rates
+   - Page transitions
+
+2. **Build Metrics**
+   - Build time
+   - Bundle size
+   - Asset optimization
+   - Type checking
+
+### Alert Thresholds
+
+1. **Critical Alerts**
+   - LCP > 3s
+   - CLS > 0.15
+   - Error rate > 1%
+   - Build failures
+
+2. **Warning Alerts**
+   - LCP > 2.5s
+   - JS size > 100KB
+   - Build time > 5min
+   - Cache misses > 10%

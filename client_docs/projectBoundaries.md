@@ -1,99 +1,93 @@
 # Project Boundaries
 
-Last Updated: 2024-01-03
+Last Updated: 2024-01-05
 
 ## Technical Constraints
 
-### Platform Limitations
+### Performance Requirements
 
-- Supabase free tier limitations
-- Static site generation constraints
-- Browser compatibility requirements
-- Mobile device support requirements
-- Image optimization constraints:
-  - Maximum original image size: 5MB
-  - Maximum optimized image size: 200KB
-  - Supported formats: JPG, PNG, WebP, AVIF
-  - Maximum dimensions: 2500x2500px
+1. **Core Web Vitals**
+   - LCP (Largest Contentful Paint) < 2.5s
+   - FID (First Input Delay) < 100ms
+   - CLS (Cumulative Layout Shift) < 0.1
+   - TBT (Total Blocking Time) < 300ms
 
-### Performance Boundaries
+2. **Page Performance**
+   - Initial page load < 1.5s
+   - Time to Interactive < 2.5s
+   - First Contentful Paint < 1s
+   - JavaScript bundle size < 100KB (initial)
 
-- Maximum bundle size: 200KB (initial load)
-- Maximum image size: 200KB per image
-- Maximum API payload: 5MB
-- Maximum concurrent users: 1000
-- Image optimization targets:
-  - Hero images: 85% quality
-  - Gallery images: 80% quality
-  - Thumbnail images: 75% quality
-  - WebP/AVIF priority over JPG/PNG
+3. **Image Performance**
+   - All images must have width/height
+   - WebP format with fallbacks
+   - Lazy loading for below-fold
+   - Responsive image sets
 
-### Security Constraints
+### Framework Constraints
 
-- No sensitive data in client-side code
-- Secure authentication flow
-- Data encryption requirements
-- API rate limiting
+1. **Astro-First Development**
+   - Zero-JS by default
+   - React only for interactive components
+   - No client-side routing
+   - Static site generation
 
-## Scale Requirements
+2. **Component Boundaries**
+   - Astro components for static content
+   - React for complex interactions
+   - No mixing frameworks within components
+   - Clear hydration boundaries
 
-### Traffic Expectations
+### Scale Requirements
 
-- Peak concurrent users: 100
-- Average daily visitors: 500
-- Maximum daily bookings: 50
-- Maximum file uploads: 100/day
+1. **Content Scale**
+   - Up to 100 gallery images
+   - Up to 20 service packages
+   - Up to 50 testimonials
+   - Up to 10 FAQ sections
 
-### Data Limits
-
-- Maximum database size: 500MB
-- Maximum storage size: 1GB
-- Maximum daily API calls: 10,000
-- Maximum file storage per user: 50MB
-
-### Performance Targets
-
-- Page load time: < 3s
-- API response time: < 200ms
-- Search results: < 500ms
-- Image optimization: < 100KB per image
+2. **Traffic Scale**
+   - 10,000 monthly visitors
+   - 1,000 form submissions
+   - 100 concurrent users
+   - 50 bookings per month
 
 ## Hard Limitations
 
-### Technical Limitations
+1. **Technical Limitations**
+   - No server-side rendering
+   - No real-time updates
+   - No client-side routing
+   - Limited to static deployment
 
-- No server-side rendering
-- Limited real-time capabilities
-- Browser support: last 2 versions
-- Mobile-first development required
-
-### Business Limitations
-
-- Geographic service area restrictions
-- Maximum booking lead time: 12 months
-- Minimum booking notice: 48 hours
-- Payment processing restrictions
+2. **Browser Support**
+   - Modern browsers only
+   - No IE11 support
+   - Progressive enhancement
+   - Mobile-first design
 
 ## Non-Negotiables
 
-### Security Requirements
+1. **Performance**
+   - Must meet Core Web Vitals
+   - No unnecessary JavaScript
+   - Optimized images required
+   - Responsive design required
 
-- HTTPS only
-- Secure authentication
-- Data encryption at rest
-- Regular security audits
+2. **Accessibility**
+   - WCAG 2.1 AA compliance
+   - Semantic HTML required
+   - Proper ARIA labels
+   - Keyboard navigation
 
-### Compliance Requirements
+3. **Security**
+   - HTTPS only
+   - CSP headers
+   - Form validation
+   - XSS prevention
 
-- GDPR compliance
-- CCPA compliance
-- Accessibility (WCAG 2.1)
-- Data retention policies
-
-### Quality Standards
-
-- 95% test coverage
-- Zero critical vulnerabilities
-- Responsive design
-- Performance budgets
-- SEO optimization
+4. **SEO**
+   - Meta tags required
+   - Sitemap required
+   - robots.txt required
+   - Structured data
