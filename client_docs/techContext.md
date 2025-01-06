@@ -124,3 +124,23 @@ Last Updated: 2024-01-05
 - Core Web Vitals pass
 - Bundle size limits
 - Image optimization rules
+
+## Animation Strategy
+
+1. **Scroll-Based Animations**
+   - Intersection Observer for simple reveal effects
+   - Motion One for scroll-linked animations
+   - GSAP ScrollTrigger for complex sequences
+   - Optimize with will-change and transform
+
+2. **Performance Considerations**
+   - Use CSS transforms over position properties
+   - Implement progressive enhancement
+   - Respect reduced-motion preferences
+   - Monitor impact on Core Web Vitals
+
+3. **Implementation Plan**
+   - Start with Intersection Observer for basic reveals
+   - Add Motion One for scroll-linked effects
+   - Consider GSAP only if needed for complex animations
+   - Test performance impact before full rollout

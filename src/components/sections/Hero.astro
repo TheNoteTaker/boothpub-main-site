@@ -4,25 +4,20 @@ import { Icon } from '@/components/ui/Icon';
 import { Image } from 'astro:assets';
 import { PhotoStripContainer } from '../PhotoStripContainer';
 import { FilmStrip } from '../FilmStrip';
-import { optimizeImage } from '@/utils/images';
+import { createResponsiveImage } from '@/utils/images';
 
 const heroImageData = {
   src: "https://images.unsplash.com/photo-1532635241-17e820acc59f",
   alt: "Photo booth event with people enjoying themselves at a wedding celebration",
   width: 2400,
   height: 1600,
-  params: {
-    auto: "format",
-    fit: "crop",
-    q: "80"
-  }
+  format: 'webp' as const,
+  quality: 85,
+  sizes: "(min-width: 1920px) 1920px, 100vw",
+  breakpoints: [640, 768, 1024, 1280, 1536, 1920]
 };
 
-const heroImage = await optimizeImage({
-  ...heroImageData,
-  format: 'webp',
-  quality: 85
-});
+const { images, sizes } = await createResponsiveImage(heroImageData);
 ---
 
 <section class="relative overflow-hidden min-h-[calc(100vh+160px)] flex items-center justify-center pt-20">
@@ -33,7 +28,7 @@ const heroImage = await optimizeImage({
   <div class="absolute inset-0 -z-10">
     <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black mix-blend-multiply"></div>
     <Image
-      {...heroImage}
+      src={images[images.length - 1].src}
       alt={heroImageData.alt}
       width={heroImageData.width}
       height={heroImageData.height}
@@ -41,6 +36,8 @@ const heroImage = await optimizeImage({
       loading="eager"
       fetchpriority="high"
       decoding="sync"
+      srcset={images.map(img => `${img.src} ${img.attributes.width}w`).join(', ')}
+      sizes={sizes}
     />
     <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/100"></div>
   </div>

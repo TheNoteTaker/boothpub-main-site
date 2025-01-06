@@ -1,92 +1,107 @@
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
-import { IMAGE_PATHS } from './image-paths';
 
-export interface OptimizeImageOptions {
+export interface ImageOptions {
   src: string | ImageMetadata;
   alt: string;
   width: number;
   height: number;
-  params?: Record<string, string | number>;
   format?: 'webp' | 'avif' | 'png' | 'jpg';
   quality?: number;
+}
+
+export interface ResponsiveImageOptions extends ImageOptions {
   sizes?: string;
+  breakpoints?: number[];
 }
 
-export interface LocalImageOptions extends Omit<OptimizeImageOptions, 'src'> {
-  alt: string;  // Make alt explicitly required
-}
-
-export const DEFAULT_IMAGE_CONFIG = {
+const DEFAULT_CONFIG = {
   format: 'webp' as const,
   quality: 80,
-  sizes: '100vw',
+  breakpoints: [640, 768, 1024, 1280, 1536],
+  sizes: '(min-width: 1536px) 1536px, (min-width: 1280px) 1280px, (min-width: 1024px) 1024px, (min-width: 768px) 768px, (min-width: 640px) 640px, 100vw'
 } as const;
 
-export interface ResponsiveImageSizes {
-  sm?: number;
-  md?: number;
-  lg?: number;
-  xl?: number;
-  '2xl'?: number;
-}
+/**
+ * Optimizes an image using astro:assets
+ * @param options Image optimization options
+ * @returns Optimized image metadata
+ */
+export async function optimizeImage(options: ImageOptions) {
+  const {
+    src,
+    alt,
+    width,
+    height,
+    format = DEFAULT_CONFIG.format,
+    quality = DEFAULT_CONFIG.quality,
+  } = options;
 
-export const defaultSizes: ResponsiveImageSizes = {
-  sm: 640,
-  md: 768,
-  lg: 1024,
-  xl: 1280,
-  '2xl': 1536,
-};
-
-export function generateSrcSet(
-  transform: { src: string },
-  sizes: ResponsiveImageSizes = defaultSizes
-): string {
-  return Object.values(sizes)
-    .map((size) => `${transform.src}?w=${size} ${size}w`)
-    .join(', ');
-}
-
-export async function optimizeImage({
-  src,
-  alt,
-  width,
-  height,
-  params = {},
-  format = DEFAULT_IMAGE_CONFIG.format,
-  quality = DEFAULT_IMAGE_CONFIG.quality,
-  sizes = DEFAULT_IMAGE_CONFIG.sizes,
-}: OptimizeImageOptions) {
-  // Handle remote URLs
-  const finalSrc = typeof src === 'string'
-    ? `${src}?${new URLSearchParams({
-        ...params,
-        w: width.toString(),
-        h: height.toString(),
-        fit: 'crop',
-        q: quality.toString()
-      } as Record<string, string>).toString()}`
-    : src;
+  if (!alt) {
+    throw new Error('Alt text is required for images');
+  }
 
   return await getImage({
-    src: finalSrc,
+    src,
     alt,
     width,
     height,
     format,
     quality,
-    loading: 'eager',
-    decoding: 'async',
-    sizes,
   });
 }
 
-export async function getLocalImage(path: string, options: LocalImageOptions) {
-  const image = await import(`../../public${path}`);
-  if (!options.alt) {
-    throw new Error(`Alt text is required for image: ${path}`);
+/**
+ * Creates a responsive image with multiple sizes
+ * @param options Responsive image options
+ * @returns Array of optimized images for different breakpoints
+ */
+export async function createResponsiveImage(options: ResponsiveImageOptions) {
+  const {
+    src,
+    alt,
+    width,
+    height,
+    format = DEFAULT_CONFIG.format,
+    quality = DEFAULT_CONFIG.quality,
+    breakpoints = DEFAULT_CONFIG.breakpoints,
+    sizes = DEFAULT_CONFIG.sizes,
+  } = options;
+
+  if (!alt) {
+    throw new Error('Alt text is required for responsive images');
   }
+
+  const images = await Promise.all(
+    breakpoints.map(async (breakpoint) => {
+      const scaledWidth = Math.min(breakpoint, width);
+      const scaledHeight = Math.round((scaledWidth / width) * height);
+
+      return await getImage({
+        src,
+        alt,
+        width: scaledWidth,
+        height: scaledHeight,
+        format,
+        quality,
+      });
+    })
+  );
+
+  return {
+    images,
+    sizes,
+  };
+}
+
+/**
+ * Loads and optimizes a local image
+ * @param path Path to the local image relative to the public directory
+ * @param options Image options
+ * @returns Optimized image metadata
+ */
+export async function getLocalImage(path: string, options: Omit<ImageOptions, 'src'>) {
+  const image = await import(`../../public${path}`);
   return optimizeImage({
     src: image.default,
     ...options,

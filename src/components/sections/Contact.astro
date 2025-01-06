@@ -71,10 +71,10 @@ const contactImage = await optimizeImage({
 
         <div class="mt-8">
           <Image
-            {...contactImage}
-            width={1200}
-            height={900}
-            alt="Happy guests enjoying our photo booth services at an event"
+            src={contactImage.src}
+            width={contactImage.attributes.width}
+            height={contactImage.attributes.height}
+            alt={contactImage.attributes.alt}
             class="rounded-xl object-cover"
           />
         </div>

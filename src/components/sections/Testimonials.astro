@@ -1,76 +1,88 @@
 ---
 import { Icon } from '@/components/ui/Icon';
 import { Image } from 'astro:assets';
-import { optimizeImage } from '@/utils/images';
+import { createResponsiveImage } from '@/utils/images';
+
+const testimonialImages = await Promise.all([
+  createResponsiveImage({
+    src: "https://images.unsplash.com/photo-1623778517507-0215e5778338",
+    alt: "Sarah and Mike, a happy wedding couple smiling at their reception",
+    width: 400,
+    height: 400,
+    format: 'webp' as const,
+    quality: 85,
+    sizes: "40px",
+    breakpoints: [40, 80]
+  }),
+  createResponsiveImage({
+    src: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
+    alt: "David Chen, Event Director, in professional attire",
+    width: 400,
+    height: 400,
+    format: 'webp' as const,
+    quality: 85,
+    sizes: "40px",
+    breakpoints: [40, 80]
+  }),
+  createResponsiveImage({
+    src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2",
+    alt: "Jennifer Martinez, Party Host, smiling warmly",
+    width: 400,
+    height: 400,
+    format: 'webp' as const,
+    quality: 85,
+    sizes: "40px",
+    breakpoints: [40, 80]
+  })
+]);
 
 const testimonials = [
   {
     quote: "The photo booth was the highlight of our wedding! Our guests couldn't stop talking about the amazing cocktails and photo experience.",
     author: "Sarah & Mike",
     role: "Wedding Couple",
-    image: await optimizeImage({
-      src: "https://images.unsplash.com/photo-1623778517507-0215e5778338",
-      alt: "Sarah and Mike, a happy wedding couple smiling at their reception",
-      width: 400,
-      height: 400,
-      format: 'webp',
-      quality: 85
-    })
+    image: testimonialImages[0]
   },
   {
     quote: "Booth Pub brought our corporate event to life. The professional setup and service exceeded our expectations.",
     author: "David Chen",
     role: "Event Director",
-    image: await optimizeImage({
-      src: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
-      alt: "David Chen, Event Director, in professional attire",
-      width: 400,
-      height: 400,
-      format: 'webp',
-      quality: 85
-    })
+    image: testimonialImages[1]
   },
   {
     quote: "The soda bar package was perfect for our family reunion. The kids loved the mocktails and everyone enjoyed the photos!",
     author: "Jennifer Martinez",
     role: "Party Host",
-    image: await optimizeImage({
-      src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2",
-      alt: "Jennifer Martinez, Party Host, smiling warmly",
-      width: 400,
-      height: 400,
-      format: 'webp',
-      quality: 85
-    })
+    image: testimonialImages[2]
   }
 ];
 
-const galleryImages = [
-  await optimizeImage({
+const galleryImagesData = [
+  {
     src: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf",
     alt: "Group of friends laughing and posing with props in our photo booth",
-    width: 1200,
-    height: 900,
-    format: 'webp',
-    quality: 85
-  }),
-  await optimizeImage({
+  },
+  {
     src: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7",
     alt: "Guests enjoying custom cocktails at a Booth Pub event",
-    width: 1200,
-    height: 900,
-    format: 'webp',
-    quality: 85
-  }),
-  await optimizeImage({
+  },
+  {
     src: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622",
     alt: "Wedding party celebrating with our photo booth and bar services",
+  }
+];
+
+const galleryImages = await Promise.all(
+  galleryImagesData.map(img => createResponsiveImage({
+    ...img,
     width: 1200,
     height: 900,
-    format: 'webp',
-    quality: 85
-  })
-];
+    format: 'webp' as const,
+    quality: 85,
+    sizes: "(min-width: 1024px) 400px, (min-width: 640px) 300px, 100vw",
+    breakpoints: [400, 600, 800, 1200]
+  }))
+);
 ---
 
 <section id="testimonials" class="relative overflow-hidden bg-[#F9CC9A]/10 py-16 sm:py-24">
@@ -99,11 +111,13 @@ const galleryImages = [
           </div>
           <div class="mt-8 flex items-center gap-4">
             <Image
-              {...testimonial.image}
+              src={testimonial.image.images[testimonial.image.images.length - 1].src}
               alt={`Profile picture of ${testimonial.author}`}
-              width={400}
-              height={400}
+              width={40}
+              height={40}
               class="h-10 w-10 rounded-full object-cover"
+              srcset={testimonial.image.images.map(img => `${img.src} ${img.attributes.width}w`).join(', ')}
+              sizes={testimonial.image.sizes}
             />
             <div>
               <div class="font-semibold text-[#2F505F]">{testimonial.author}</div>
@@ -116,14 +130,16 @@ const galleryImages = [
 
     <div class="mt-16">
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {galleryImages.map((image) => (
+        {galleryImages.map((image, index) => (
           <div class="relative aspect-[4/3] overflow-hidden rounded-xl">
             <Image
-              {...image}
-              alt="Photo booth event gallery image"
+              src={image.images[image.images.length - 1].src}
+              alt={galleryImagesData[index].alt}
               width={1200}
               height={900}
               class="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
+              srcset={image.images.map(img => `${img.src} ${img.attributes.width}w`).join(', ')}
+              sizes={image.sizes}
             />
           </div>
         ))}

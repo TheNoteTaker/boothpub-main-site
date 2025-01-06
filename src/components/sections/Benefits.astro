@@ -1,22 +1,20 @@
 ---
 import { Icon } from '@/components/ui/Icon';
 import { Image } from 'astro:assets';
-import { optimizeImage } from '@/utils/images';
+import { createResponsiveImage } from '@/utils/images';
 
-const benefitsImage = await optimizeImage({
+const benefitsImageData = {
   src: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3",
   alt: "Friends enjoying photo booth at an event",
   width: 800,
   height: 1067,
-  format: 'webp',
+  format: 'webp' as const,
   quality: 85,
-  params: {
-    w: '800',
-    h: '1067',
-    fit: 'crop',
-    q: '85'
-  }
-});
+  sizes: "(min-width: 1024px) 800px, (min-width: 640px) 600px, 100vw",
+  breakpoints: [400, 600, 800]
+};
+
+const { images, sizes } = await createResponsiveImage(benefitsImageData);
 
 const benefits = [
   {
@@ -109,12 +107,14 @@ const benefits = [
       <div class="relative lg:mt-0">
         <div class="relative aspect-[3/4] overflow-hidden rounded-2xl">
           <Image
-            {...benefitsImage}
-            alt="Friends enjoying photo booth at an event"
-            width={800}
-            height={1067}
+            src={images[images.length - 1].src}
+            alt={benefitsImageData.alt}
+            width={benefitsImageData.width}
+            height={benefitsImageData.height}
             class="object-cover w-full h-full"
             loading="lazy"
+            srcset={images.map(img => `${img.src} ${img.attributes.width}w`).join(', ')}
+            sizes={sizes}
           />
           <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/10"></div>
         </div>
