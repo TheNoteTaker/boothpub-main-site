@@ -3,6 +3,7 @@ import { Icon } from '@/components/ui/Icon';
 import { createResponsiveImage, type ResponsiveImageOptions } from '@/utils/images';
 import { ScrollSection } from '@/components/animations/ScrollSection';
 import { BenefitContent } from '@/components/animations/BenefitContent';
+import { ScrollProgress } from '@/components/animations/ScrollProgress';
 import BenefitImageWrapper from '@/components/animations/BenefitImageWrapper.astro';
 import { motion } from 'framer-motion';
 
@@ -64,22 +65,23 @@ const benefitImages = await Promise.all(
 ---
 
 <section id="benefits" class="relative bg-white">
-  <ScrollSection client:load index={0}>
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-      <div class="inline-flex mb-4 items-center rounded-full bg-[#F9CC9A]/10 px-4 py-1">
-        <Icon name="Sparkles" className="mr-2 h-4 w-4 text-[#D75E1F]" client:load />
-        <span class="text-sm font-medium text-[#D75E1F]">Why Choose Us</span>
+  <ScrollProgress client:load />
+  <div class="relative">
+    <ScrollSection client:load index={0}>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-flex mb-4 items-center rounded-full bg-[#F9CC9A]/10 px-4 py-1">
+          <Icon name="Sparkles" className="mr-2 h-4 w-4 text-[#D75E1F]" client:load />
+          <span class="text-sm font-medium text-[#D75E1F]">Why Choose Us</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#2F505F] sm:text-5xl">
+          Elevate Your Events with Premium Photo Experiences
+        </h2>
+        <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+          We combine professional photography with exceptional service to create unforgettable moments at your events.
+        </p>
       </div>
-      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-[#2F505F] sm:text-5xl">
-        Elevate Your Events with Premium Photo Experiences
-      </h2>
-      <p class="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-        We combine professional photography with exceptional service to create unforgettable moments at your events.
-      </p>
-    </div>
-  </ScrollSection>
+    </ScrollSection>
 
-  <div class="relative bg-white">
     {benefits.map((benefit, index) => (
       <ScrollSection client:load index={index + 1}>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -105,3 +107,10 @@ const benefitImages = await Promise.all(
     ))}
   </div>
 </section>
+
+<style>
+  #benefits {
+    contain: layout paint;
+    isolation: isolate;
+  }
+</style>

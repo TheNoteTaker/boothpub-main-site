@@ -18,10 +18,10 @@ function OptimizedImage({
   className, 
   ...props 
 }: ComponentProps<'img'> & { width: number; height: number }) {
-  // Convert the src to use Astro's built-in image optimization
+  // Only optimize internal images
   const optimizedSrc = src.startsWith('/')
-    ? src
-    : `/_image?href=${encodeURIComponent(src)}&w=${width}&h=${height}&f=webp&q=85`;
+    ? `/_image?href=${encodeURIComponent(src)}&w=${width}&h=${height}&f=webp&q=85`
+    : src;
 
   return (
     <img
@@ -39,32 +39,32 @@ function OptimizedImage({
 
 const images: ImageData[] = [
   {
-    src: '/assets/photos/events/booth/event-1.jpg',
-    alt: 'Happy guests enjoying our photo booth at event 1',
+    src: 'https://source.unsplash.com/360x480/?photobooth,party&sig=1',
+    alt: 'Temporary placeholder image 1',
     width: 360,
     height: 480
   },
   {
-    src: '/assets/photos/events/booth/event-2.jpg',
-    alt: 'Friends taking photos in our booth at event 2',
+    src: 'https://source.unsplash.com/360x480/?photobooth,event&sig=2',
+    alt: 'Temporary placeholder image 2',
     width: 360,
     height: 480
   },
   {
-    src: '/assets/photos/events/booth/event-3.jpg',
-    alt: 'Group celebration at photo booth event 3',
+    src: 'https://source.unsplash.com/360x480/?party,celebration&sig=3',
+    alt: 'Temporary placeholder image 3',
     width: 360,
     height: 480
   },
   {
-    src: '/assets/photos/events/booth/event-4.jpg',
-    alt: 'Guests having fun at photo booth event 4',
+    src: 'https://source.unsplash.com/360x480/?wedding,celebration&sig=4',
+    alt: 'Temporary placeholder image 4',
     width: 360,
     height: 480
   },
   {
-    src: '/assets/photos/events/booth/event-5.jpg',
-    alt: 'Party atmosphere at photo booth event 5',
+    src: 'https://source.unsplash.com/360x480/?event,party&sig=5',
+    alt: 'Temporary placeholder image 5',
     width: 360,
     height: 480
   }
@@ -72,7 +72,7 @@ const images: ImageData[] = [
 
 export function FilmStrip() {
   return (
-    <div className="absolute bottom-0 left-0 right-0 h-[25vh] sm:h-[28vh] md:h-[30vh] lg:h-[32vh] max-h-[320px]">
+    <div className="absolute bottom-0 left-0 right-0 h-[25vh] sm:h-[28vh] md:h-[30vh] lg:h-[32vh] max-h-[320px] bg-black/5">
       {/* Container with responsive height */}
       <div className="absolute bottom-0 left-0 right-0 h-[94%]">
         {/* Main film strip */}
@@ -82,15 +82,15 @@ export function FilmStrip() {
           <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-black/20 z-10" />
           
           {/* Scrolling content container */}
-          <div className="h-full flex items-center">
-            <div className="inline-flex animate-scroll whitespace-nowrap h-[98%]">
+          <div className="h-full flex items-center overflow-hidden">
+            <div className="flex animate-scroll whitespace-nowrap h-[98%] gap-0.5">
             {[...images, ...images, ...images].map((image, index) => {
               // Create a unique key by combining the image index and its position in the repeated sequence
               const uniqueKey = `${index % images.length}-${Math.floor(index / images.length)}`;
               return (
                 <div
                   key={uniqueKey}
-                  className="relative inline-block h-full"
+                  className="relative inline-block h-full shrink-0"
                   style={{
                     width: 'clamp(200px, 25vw, 360px)'
                   }}
@@ -112,7 +112,7 @@ export function FilmStrip() {
                       </div>
                       
                       {/* Photo area - with proportional height */}
-                      <div className="h-[88%] relative">
+                      <div className="h-[88%] relative bg-black/10">
                         <div className="absolute inset-0 p-[1%]">
                           <div className="relative w-full h-full overflow-hidden">
                             <OptimizedImage

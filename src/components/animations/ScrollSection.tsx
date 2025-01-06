@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 
 interface ScrollSectionProps {
@@ -16,15 +16,18 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75, 1],
+    [0, 0.1, 0.5, 0.9, 1],
     [0, 0, 1, 0, 0]
   );
 
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75, 1],
+    [0, 0.1, 0.5, 0.9, 1],
     [0.8, 0.8, 1, 0.8, 0.8]
   );
+
+  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
+  const springScale = useSpring(scale, springConfig);
 
   return (
     <div className="relative" style={{ height: '200vh' }}>
@@ -33,7 +36,7 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
         className="min-h-screen flex items-center justify-center sticky top-0 bg-white"
         style={{
           opacity,
-          scale,
+          scale: springScale,
           zIndex: 40 - index,
         }}
       >

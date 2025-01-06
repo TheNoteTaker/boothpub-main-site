@@ -1,11 +1,12 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 import { Icon } from '@/components/ui/Icon';
+import * as LucideIcons from 'lucide-react';
 
 interface BenefitContentProps {
   name: string;
   description: string;
-  icon: string;
+  icon: keyof typeof LucideIcons;
 }
 
 export function BenefitContent({ name, description, icon }: BenefitContentProps) {
@@ -18,26 +19,29 @@ export function BenefitContent({ name, description, icon }: BenefitContentProps)
 
   const x = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75, 1],
+    [0, 0.1, 0.5, 0.9, 1],
     [100, 100, 0, -100, -100]
   );
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75, 1],
+    [0, 0.1, 0.5, 0.9, 1],
     [0, 0, 1, 0, 0]
   );
+
+  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
+  const springX = useSpring(x, springConfig);
 
   return (
     <motion.div
       ref={contentRef}
-      style={{ x, opacity }}
+      style={{ x: springX, opacity }}
       className="flex flex-col gap-6 max-w-xl"
     >
       <motion.div 
         className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#F9CC9A]"
         whileInView={{ scale: [0.8, 1], rotate: [-10, 0] }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <Icon
           name={icon}
@@ -49,7 +53,7 @@ export function BenefitContent({ name, description, icon }: BenefitContentProps)
           className="text-3xl font-semibold text-[#2F505F]"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
         >
           {name}
         </motion.h3>
@@ -57,7 +61,7 @@ export function BenefitContent({ name, description, icon }: BenefitContentProps)
           className="mt-4 text-xl text-muted-foreground"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
         >
           {description}
         </motion.p>
