@@ -81,8 +81,10 @@ const benefitImages = await Promise.all(
 ---
 
 <section id="benefits" class="relative bg-white">
-  <ScrollProgress client:load />
-  <div class="relative">
+  <div class="progress-container">
+    <ScrollProgress client:load />
+  </div>
+  <div class="content-container relative">
     <ScrollSection client:load index={0}>
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <div class="inline-flex mb-4 items-center rounded-full bg-[#F9CC9A]/10 px-4 py-1">
@@ -101,7 +103,7 @@ const benefitImages = await Promise.all(
     {benefits.map((benefit, index) => (
       <ScrollSection client:load index={index + 1}>
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-24 gap-y-12 items-center">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-24 gap-y-12 items-center relative pr-12 lg:pr-16">
             <BenefitContent
               client:load
               name={benefit.name}
@@ -109,15 +111,17 @@ const benefitImages = await Promise.all(
               icon={benefit.icon}
               cta={benefit.cta}
             />
-            <BenefitImageWrapper
-              src={benefitImages[index].images[benefitImages[index].images.length - 1].src}
-              alt={benefit.image.alt}
-              width={800}
-              height={1067}
-              loading={index === 0 ? "eager" : "lazy"}
-              srcset={benefitImages[index].images.map(img => `${img.src} ${img.attributes.width}w`).join(', ')}
-              sizes={benefitImages[index].sizes}
-            />
+            <div>
+              <BenefitImageWrapper
+                src={benefitImages[index].images[benefitImages[index].images.length - 1].src}
+                alt={benefit.image.alt}
+                width={800}
+                height={1067}
+                loading={index === 0 ? "eager" : "lazy"}
+                srcset={benefitImages[index].images.map(img => `${img.src} ${img.attributes.width}w`).join(', ')}
+                sizes={benefitImages[index].sizes}
+              />
+            </div>
           </div>
         </div>
       </ScrollSection>
@@ -129,5 +133,22 @@ const benefitImages = await Promise.all(
   #benefits {
     contain: layout paint;
     isolation: isolate;
+    position: relative;
+  }
+
+  .progress-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 4rem;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  @media (max-width: 768px) {
+    .progress-container {
+      width: 3rem;
+    }
   }
 </style>
