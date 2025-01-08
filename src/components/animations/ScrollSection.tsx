@@ -16,21 +16,21 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.1, 0.5, 0.9, 1],
-    [0, 0, 1, 0, 0]
+    [0, 0.2, 0.8, 1],
+    [0, 1, 1, 0]
   );
 
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.1, 0.5, 0.9, 1],
-    [0.8, 0.8, 1, 0.8, 0.8]
+    [0, 0.2, 0.8, 1],
+    [0.98, 1, 1, 0.98]
   );
 
   const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
   const springScale = useSpring(scale, springConfig);
 
   return (
-    <div className="relative" style={{ height: '200vh' }}>
+    <div className="relative" style={{ height: '120vh' }}>
       <motion.div
         ref={sectionRef}
         className="min-h-screen flex items-center justify-center sticky top-0 bg-white"

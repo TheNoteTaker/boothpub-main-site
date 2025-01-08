@@ -23,14 +23,14 @@ export function BenefitContent({ name, description, icon, cta }: BenefitContentP
 
   const x = useTransform(
     scrollYProgress,
-    [0, 0.1, 0.5, 0.9, 1],
-    [100, 100, 0, -100, -100]
+    [0, 0.2, 0.8, 1],
+    [30, 0, 0, -30]
   );
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.1, 0.5, 0.9, 1],
-    [0, 0, 1, 0, 0]
+    [0, 0.2, 0.8, 1],
+    [0, 1, 1, 0]
   );
 
   const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
