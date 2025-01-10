@@ -16,14 +16,16 @@ const { src, alt, width, height, srcset, sizes, loading = 'lazy' } = Astro.props
 ---
 
 <BenefitImageAnimation client:load>
-  <Image
-    src={src}
-    alt={alt}
-    width={width}
-    height={height}
-    class="object-cover w-full h-full"
-    loading={loading}
-    srcset={srcset}
-    sizes={sizes}
-  />
+  <div class="relative w-full h-full aspect-[3/4] sm:aspect-auto">
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      class="object-cover w-full h-full rounded-lg"
+      loading={loading}
+      srcset={srcset}
+      sizes={sizes}
+    />
+  </div>
 </BenefitImageAnimation>

@@ -16,14 +16,14 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.15, 0.85, 1],
-    [0, 1, 1, 0]
+    [0, 0.05, 0.1, 0.6, 0.7, 0.8, 1],
+    [0, 1, 1, 1, 1, 1, 0]
   );
 
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.15, 0.85, 1],
-    [0.98, 1, 1, 0.98]
+    [0, 0.05, 0.1, 0.6, 0.7, 0.8, 1],
+    [0.98, 1, 1, 1, 1, 1, 0.98]
   );
 
   const springConfig = { stiffness: 80, damping: 25, restDelta: 0.001 };
@@ -33,14 +33,16 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
     <div className="relative" style={{ height: '120vh' }}>
       <motion.div
         ref={sectionRef}
-        className="min-h-screen flex items-center justify-center sticky top-0 bg-white"
+        className="min-h-screen flex items-center justify-center sticky top-0 bg-white py-16 pb-24 sm:py-0"
         style={{
           opacity,
           scale: springScale,
           zIndex: 40 - index,
         }}
       >
-        {children}
+        <div className="w-full">
+          {children}
+        </div>
       </motion.div>
     </div>
   );

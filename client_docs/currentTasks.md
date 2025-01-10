@@ -6,6 +6,14 @@ Last Updated: 2024-01-05
 
 ### Animation Implementation
 
+⚙️ **Mobile Icon Animations**
+
+- ⚙️ Fix early icon loading on mobile
+- ⚙️ Separate icon from scroll progress
+- ⚙️ Adjust viewport trigger margin
+- ⚙️ Test mobile behavior
+Components: src/components/animations/BenefitContent.tsx
+
 ⚙️ **Section Animations**
 
 - ✅ Implement continuous progress bar
