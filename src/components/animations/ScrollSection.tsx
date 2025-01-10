@@ -16,17 +16,17 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.8, 1],
+    [0, 0.15, 0.85, 1],
     [0, 1, 1, 0]
   );
 
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.8, 1],
+    [0, 0.15, 0.85, 1],
     [0.98, 1, 1, 0.98]
   );
 
-  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
+  const springConfig = { stiffness: 80, damping: 25, restDelta: 0.001 };
   const springScale = useSpring(scale, springConfig);
 
   return (
