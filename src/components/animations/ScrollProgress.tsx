@@ -7,22 +7,36 @@ export function ScrollProgress() {
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start center", "end center"]
+    offset: ["start start", "end -5%"]
   });
 
-  // Animation transition points (0%, 33%, 66%, 100%)
-  const transitionPoints = [0, 0.25, 0.5, 0.75, 1];
+  // Calculate section progress points based on total sections
+  const totalSections = 5; // Header + 4 benefits
+  const sectionHeight = 1 / totalSections;
+  
+  // Create transition points that match section animations
+  const transitionPoints = Array.from({ length: totalSections + 1 }, (_, i) => {
+    const progress = i * sectionHeight;
+    return {
+      point: progress,
+      active: useTransform(
+        scrollYProgress,
+        [
+          Math.max(0, progress - 0.02),
+          Math.max(0, progress + 0.03),
+          Math.min(1, progress + sectionHeight - 0.05),
+          Math.min(1, progress + sectionHeight)
+        ],
+        [0, 1, 1, 0]
+      )
+    };
+  });
 
   return (
     <>
-      {/* Container that spans the entire section */}
-      <div ref={containerRef} className="absolute inset-0 top-[100vh] pointer-events-none" />
+      <div ref={containerRef} className="absolute inset-0 pointer-events-none" />
       
-      {/* Progress bar container */}
-      <div 
-        ref={progressRef}
-        className="w-2 h-full mx-auto"
-      >
+      <div ref={progressRef} className="w-2 h-full mx-auto">
         <div className="sticky top-0 h-screen flex items-center">
           <div className="relative w-2 h-[60vh]">
             {/* Background bar */}
@@ -39,7 +53,7 @@ export function ScrollProgress() {
             />
             
             {/* Section markers */}
-            {transitionPoints.map((point, i) => (
+            {transitionPoints.map(({ point, active }, i) => (
               <div 
                 key={i} 
                 className="absolute w-3 h-3 left-1/2 -translate-x-1/2" 
@@ -52,11 +66,7 @@ export function ScrollProgress() {
                 <motion.div
                   className="absolute inset-0 rounded-full bg-[#D75E1F] origin-center"
                   style={{
-                    scale: useTransform(
-                      scrollYProgress,
-                      [point - 0.01, point],
-                      [0, 1]
-                    ),
+                    scale: active
                   }}
                 />
                 
@@ -64,16 +74,8 @@ export function ScrollProgress() {
                 <motion.div
                   className="absolute inset-0 rounded-full border-2 border-[#D75E1F] origin-center"
                   style={{
-                    opacity: useTransform(
-                      scrollYProgress,
-                      [point - 0.01, point],
-                      [0, 1]
-                    ),
-                    scale: useTransform(
-                      scrollYProgress,
-                      [point - 0.01, point, point + 0.01],
-                      [0.8, 1, 1]
-                    )
+                    opacity: active,
+                    scale: useTransform(active, [0, 1], [0.8, 1])
                   }}
                 />
               </div>
