@@ -39,6 +39,7 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
           scale: springScale,
           zIndex: 40 - index,
           transform: 'translate3d(0,0,0)',
+          position: 'relative'
         }}
       >
         <div className="w-full">

@@ -46,6 +46,7 @@ export function IntroSection({ children }: IntroSectionProps) {
           y: springY,
           zIndex: 40,
           transform: 'translate3d(0,0,0)',
+          position: 'relative'
         }}
       >
         <div className="w-full">

@@ -50,7 +50,7 @@ export function BenefitContent({ name, description, icon, cta }: BenefitContentP
   return (
     <motion.div
       ref={contentRef}
-      style={{ x: springX, opacity }}
+      style={{ x: springX, opacity, position: 'relative' }}
       className="flex flex-col gap-6 max-w-xl"
     >
       <motion.div 

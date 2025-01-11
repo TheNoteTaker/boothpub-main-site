@@ -38,13 +38,15 @@ export function BenefitImageAnimation({ children }: BenefitImageAnimationProps) 
   );
 
   return (
-    <motion.div
-      ref={imageRef}
-      style={{ x, opacity, scale, rotate }}
-      className="relative aspect-[3/4] overflow-hidden rounded-2xl"
-    >
-      {children}
-      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/10" />
-    </motion.div>
+    <div className="relative">
+      <motion.div
+        ref={imageRef}
+        style={{ x, opacity, scale, rotate }}
+        className="relative aspect-[3/4] overflow-hidden rounded-2xl"
+      >
+        {children}
+        <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/10" />
+      </motion.div>
+    </div>
   );
 }

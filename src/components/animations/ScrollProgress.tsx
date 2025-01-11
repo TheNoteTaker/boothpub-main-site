@@ -62,7 +62,7 @@ export function ScrollProgress() {
     <>
       <div ref={containerRef} className="absolute inset-0 pointer-events-none" />
       
-      <div ref={progressRef} className="w-2 h-full mx-auto">
+      <div ref={progressRef} className="w-2 h-full mx-auto relative">
         <div className="sticky top-0 h-screen flex items-center">
           <div className="relative w-2 h-[60vh]">
             {/* Background bar */}
