@@ -1,12 +1,11 @@
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
 
-interface ScrollSectionProps {
+interface IntroSectionProps {
   children: React.ReactNode;
-  index: number;
 }
 
-export function ScrollSection({ children, index }: ScrollSectionProps) {
+export function IntroSection({ children }: IntroSectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -16,18 +15,25 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
-    [0, 0.5, 1, 1, 1, 1, 0.5, 0]
+    [0, 0.1, 0.3, 0.6, 0.8, 1],
+    [0, 1, 1, 1, 0.5, 0]
   );
 
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
-    [0.98, 0.99, 1, 1, 1, 1, 0.99, 0.98]
+    [0, 0.1, 0.3, 0.6, 0.8, 1],
+    [0.95, 1, 1, 1, 0.95, 0.9]
+  );
+
+  const y = useTransform(
+    scrollYProgress,
+    [0, 0.1, 0.3, 0.6, 0.8, 1],
+    [20, 0, 0, 0, 20, 40]
   );
 
   const springConfig = { stiffness: 80, damping: 25, restDelta: 0.001 };
   const springScale = useSpring(scale, springConfig);
+  const springY = useSpring(y, springConfig);
 
   return (
     <div className="relative" style={{ height: '120vh' }}>
@@ -37,7 +43,8 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
         style={{
           opacity,
           scale: springScale,
-          zIndex: 40 - index,
+          y: springY,
+          zIndex: 40,
           transform: 'translate3d(0,0,0)',
         }}
       >
@@ -47,4 +54,4 @@ export function ScrollSection({ children, index }: ScrollSectionProps) {
       </motion.div>
     </div>
   );
-}
+} 

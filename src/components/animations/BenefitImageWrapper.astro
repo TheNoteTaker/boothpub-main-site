@@ -16,16 +16,23 @@ const { src, alt, width, height, srcset, sizes, loading = 'lazy' } = Astro.props
 ---
 
 <BenefitImageAnimation client:load>
-  <div class="relative w-full h-full aspect-[3/4] sm:aspect-auto">
+  <div class="relative w-full h-full aspect-[3/4] sm:aspect-auto overflow-hidden">
     <Image
       src={src}
       alt={alt}
       width={width}
       height={height}
-      class="object-cover w-full h-full rounded-lg"
+      class="object-cover w-full h-full rounded-lg transform-gpu"
       loading={loading}
       srcset={srcset}
       sizes={sizes}
     />
   </div>
 </BenefitImageAnimation>
+
+<style>
+  :global(.transform-gpu) {
+    transform: translate3d(0,0,0);
+    backface-visibility: hidden;
+  }
+</style>

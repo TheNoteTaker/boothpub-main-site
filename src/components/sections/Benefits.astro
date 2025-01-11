@@ -2,6 +2,7 @@
 import { Icon } from '@/components/ui/Icon';
 import { createResponsiveImage, type ResponsiveImageOptions } from '@/utils/images';
 import { ScrollSection } from '@/components/animations/ScrollSection';
+import { IntroSection } from '@/components/animations/IntroSection';
 import { BenefitContent } from '@/components/animations/BenefitContent';
 import { ScrollProgress } from '@/components/animations/ScrollProgress';
 import BenefitImageWrapper from '@/components/animations/BenefitImageWrapper.astro';
@@ -63,12 +64,12 @@ const benefits = [
 ];
 
 const imageOptions: ResponsiveImageOptions = {
-  width: 600,
-  height: 800,
+  width: 500,
+  height: 667,
   format: 'webp',
   quality: 85,
-  sizes: "(min-width: 1024px) 600px, (min-width: 640px) 450px, 100vw",
-  breakpoints: [400, 600, 800]
+  sizes: "(min-width: 1024px) 500px, (min-width: 640px) 400px, 100vw",
+  breakpoints: [400, 500, 667]
 };
 
 const benefitImages = await Promise.all(
@@ -85,7 +86,7 @@ const benefitImages = await Promise.all(
     <ScrollProgress client:load />
   </div>
   <div class="content-container relative">
-    <ScrollSection client:load index={0}>
+    <IntroSection client:load>
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         <div class="inline-flex mb-4 items-center rounded-full bg-[#F9CC9A]/10 px-4 py-1">
           <Icon name="Sparkles" className="mr-2 h-4 w-4 text-[#D75E1F]" client:load />
@@ -98,7 +99,7 @@ const benefitImages = await Promise.all(
           We combine professional photography with exceptional service to create unforgettable moments at your events.
         </p>
       </div>
-    </ScrollSection>
+    </IntroSection>
 
     {benefits.map((benefit, index) => (
       <ScrollSection client:load index={index + 1}>
@@ -111,12 +112,12 @@ const benefitImages = await Promise.all(
               icon={benefit.icon}
               cta={benefit.cta}
             />
-            <div class="w-full h-full max-h-[45vh] sm:max-h-none overflow-hidden">
+            <div class="w-full h-full max-h-[40vh] sm:max-h-[500px] overflow-hidden">
               <BenefitImageWrapper
                 src={benefitImages[index].images[benefitImages[index].images.length - 1].src}
                 alt={benefit.image.alt}
-                width={800}
-                height={1067}
+                width={667}
+                height={889}
                 loading={index === 0 ? "eager" : "lazy"}
                 srcset={benefitImages[index].images.map(img => `${img.src} ${img.attributes.width}w`).join(', ')}
                 sizes={benefitImages[index].sizes}

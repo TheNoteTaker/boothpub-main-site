@@ -15,26 +15,26 @@ export function BenefitImageAnimation({ children }: BenefitImageAnimationProps) 
 
   const x = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75, 1],
-    [-100, -100, 0, 100, 100]
+    [0, 0.2, 0.4, 0.6, 0.8, 1],
+    [-100, -50, 0, 0, 50, 100]
   );
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75, 1],
-    [0, 0, 1, 0, 0]
+    [0, 0.2, 0.4, 0.6, 0.8, 1],
+    [0, 0.5, 1, 1, 0.5, 0]
   );
 
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75, 1],
-    [0.8, 0.8, 1, 0.8, 0.8]
+    [0, 0.2, 0.4, 0.6, 0.8, 1],
+    [0.8, 0.9, 1, 1, 0.9, 0.8]
   );
 
   const rotate = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75, 1],
-    [-5, -5, 0, 5, 5]
+    [0, 0.2, 0.4, 0.6, 0.8, 1],
+    [-5, -2, 0, 0, 2, 5]
   );
 
   return (

@@ -7,7 +7,7 @@ export function ScrollProgress() {
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end -5%"]
+    offset: ["start center", "end -10%"]
   });
 
   // Calculate section progress points based on total sections
@@ -17,20 +17,46 @@ export function ScrollProgress() {
   // Create transition points that match section animations
   const transitionPoints = Array.from({ length: totalSections + 1 }, (_, i) => {
     const progress = i * sectionHeight;
+    const isLast = i === totalSections;
+
+    // Special handling for the last point
+    if (isLast) {
+      return {
+        point: progress,
+        active: useTransform(
+          scrollYProgress,
+          [
+            0.85, // Start highlighting near the end
+            0.9,  // Fully highlighted
+            0.95, // Stay highlighted
+            1     // Stay highlighted until the very end
+          ],
+          [0, 1, 1, 1]
+        )
+      };
+    }
+
     return {
       point: progress,
       active: useTransform(
         scrollYProgress,
         [
-          Math.max(0, progress - 0.02),
-          Math.max(0, progress + 0.03),
-          Math.min(1, progress + sectionHeight - 0.05),
-          Math.min(1, progress + sectionHeight)
+          Math.max(0, progress - 0.05),
+          Math.max(0, progress),
+          Math.min(0.9, progress + sectionHeight * 0.6),
+          Math.min(0.95, progress + sectionHeight * 0.8)
         ],
         [0, 1, 1, 0]
       )
     };
   });
+
+  // Clamp the progress to stop at the last section
+  const clampedProgress = useTransform(
+    scrollYProgress,
+    [0, 0.95, 1],
+    [0, 1, 1]
+  );
 
   return (
     <>
@@ -44,11 +70,10 @@ export function ScrollProgress() {
             
             {/* Active progress bar */}
             <motion.div
-              className="absolute top-0 left-0 w-2 bg-[#D75E1F] rounded-full"
+              className="absolute top-0 left-0 w-2 bg-[#D75E1F] rounded-full origin-top"
               style={{
-                scaleY: scrollYProgress,
-                height: "100%",
-                transformOrigin: "top"
+                scaleY: clampedProgress,
+                height: "100%"
               }}
             />
             

@@ -1,90 +1,56 @@
 # Active Context
 
-Last Updated: 2024-01-05
+Last Updated: [Current Date]
 
 ## Current Focus
 
-1. **Animation Optimization**
-   - Extended section visibility duration
-   - Smoothed transition animations
-   - Adjusted spring motion config
-   - Enhanced visual synchronization
-
-2. **Component Enhancement**
-   - Extended stable period (0.15-0.85)
-   - Refined spring animation parameters
-   - Smoother motion transitions
-   - Improved content visibility
-
-3. **Performance Baseline**
-   - Monitoring animation performance
-   - Testing scroll behavior
-   - Evaluating user experience
-   - Tracking Core Web Vitals
+- Benefits section scrollytelling animations
+- Image sizing and animation timing adjustments
+- Exit animation restoration
+- Progress bar refinements
 
 ## Recent Changes
 
-1. **Animation System Updates**
-   - Extended content visibility period
-   - Adjusted transition timing (0.15-0.85)
-   - Smoothed spring motion (80 stiffness, 25 damping)
-   - Enhanced visual stability
-
-2. **Component Updates**
-   - ScrollSection.tsx (extended visibility)
-   - ScrollProgress.tsx (refined timing)
-   - Optimized transition curves
-   - Enhanced content persistence
-
-3. **Documentation Updates**
-   - Updated animation timing strategy
-   - Documented transition points
-   - Added performance notes
-   - Updated technical constraints
+1. Reduced image dimensions to prevent navbar overlap
+   - Updated from 600x800 to 500x667
+   - Added fixed maximum height for desktop view
+2. Modified animation timing for better flow
+   - Early entrance (0-40% scroll)
+   - Extended stable period (40-60% scroll)
+   - Smooth exit (60-100% scroll)
+   - Restored exit animations with fade and movement
+3. Enhanced intro section animations
+   - Created specialized IntroSection component
+   - Added vertical movement animation
+   - Smoother scale transitions
+   - Extended visibility period
+4. Refined progress bar behavior
+   - Added special handling for last circle
+   - Clamped progress to 95% scroll
+   - Early end offset (-10%)
+   - Delayed start until section centered
+   - Improved circle transitions
+   - Eliminated overscroll effects
 
 ## Active Files
 
-1. **Recently Updated**
-   - src/components/animations/ScrollSection.tsx (visibility extension)
-   - src/components/animations/ScrollProgress.tsx (timing refinements)
-   - src/components/sections/Benefits.astro (progress integration)
-   - src/components/animations/BenefitContent.tsx
-
-2. **Next to Update**
-   - Additional animation components
-   - Performance monitoring
-   - User experience testing
+- src/components/sections/Benefits.astro
+- src/components/animations/BenefitImageAnimation.tsx
+- src/components/animations/ScrollSection.tsx
+- src/components/animations/IntroSection.tsx
+- src/components/animations/ScrollProgress.tsx
 
 ## Next Steps
 
-1. **Immediate Actions**
-   - Monitor extended visibility behavior
-   - Test smoother transitions
-   - Verify timing accuracy
-   - Fine-tune if needed
+1. Test animations across different screen sizes
+2. Verify progress bar synchronization
+3. Consider additional performance optimizations
 
-2. **Technical Planning**
-   - Consider additional timing adjustments
-   - Plan performance improvements
-   - Review accessibility
-   - Update documentation
+## Notes
 
-## Known Issues/Conflicts
-
-1. **Performance**
-   - Monitor new animation timing
-   - Test scroll performance
-   - Check transition points
-   - Verify smooth animations
-
-2. **Integration**
-   - Test across browsers
-   - Verify responsive behavior
-   - Check animation sync
-   - Monitor load times
-
-3. **Documentation**
-   - Update animation patterns
-   - Document new transition points
-   - Note timing configurations
-   - Track optimization needs
+- Animations now have smoother entrance and exit
+- Content stable in middle of viewport
+- Exit animations restore visual continuity
+- Image dimensions maintain aspect ratio while fitting viewport better
+- Progress bar stops cleanly at last circle
+- Last circle stays highlighted at section end
