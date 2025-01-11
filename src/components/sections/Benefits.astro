@@ -112,7 +112,7 @@ const benefitImages = await Promise.all(
               icon={benefit.icon}
               cta={benefit.cta}
             />
-            <div class="w-full h-full max-h-[40vh] sm:max-h-[500px] overflow-hidden">
+            <div class="w-full h-full max-h-[40vh] sm:max-h-[500px] overflow-hidden rounded-2xl">
               <BenefitImageWrapper
                 src={benefitImages[index].images[benefitImages[index].images.length - 1].src}
                 alt={benefit.image.alt}

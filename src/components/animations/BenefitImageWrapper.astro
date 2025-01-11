@@ -16,7 +16,7 @@ const { src, alt, width, height, srcset, sizes, loading = 'lazy' } = Astro.props
 ---
 
 <BenefitImageAnimation client:load>
-  <div class="relative w-full h-full aspect-[3/4] sm:aspect-auto overflow-hidden">
+  <div class="relative w-full h-full aspect-[3/4] sm:aspect-auto overflow-hidden rounded-2xl">
     <Image
       src={src}
       alt={alt}
